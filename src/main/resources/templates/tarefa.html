@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas</title>
+</head>
+<body>
+    <h1> Tarefa </h1>
+    
+    <form action="#" th:action="@{/tarefas}" th:object="${tarefa}" method="post">
+        <label for="descricaoTarefa"> Descrição: </label>
+        <input type="text" id="descricaoTarefa">
+
+        <label for="idUsuario"> Usuário: </label>
+        <input type="text" id="idUsuario">
+
+        <label for="completa"> Completa: </label>
+        <input type="checkbox" id="completa">
+
+        <button type="submit"> Salvar </button>
+    </form>
+
+</body>
+</html>
