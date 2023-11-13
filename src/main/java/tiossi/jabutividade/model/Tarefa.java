@@ -1,5 +1,7 @@
 package tiossi.jabutividade.model;
 
+import java.util.Objects;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,9 +13,19 @@ public class Tarefa {
     private String idUsuario;
     private Boolean completa;
 
-    // public Tarefa () {
+    public Tarefa() {
+        this.idTarefa = "";
+        this.descricaoTarefa = "";
+        this.idUsuario = "";
+        this.completa = false;
+    }
 
-    // }
+    public Tarefa(String id, String descricao, String usuario, Boolean completa) {
+        this.idTarefa = id;
+        this.descricaoTarefa = descricao;
+        this.idUsuario = usuario;
+        this.completa = completa;
+    }
 
     public String getIdTarefa() {
         return idTarefa;
@@ -45,5 +57,23 @@ public class Tarefa {
 
     public void setCompleta(Boolean completa) {
         this.completa = completa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Tarefa tarefa = (Tarefa) o;
+        return Objects.equals(idTarefa, tarefa.idTarefa) &&
+                Objects.equals(descricaoTarefa, tarefa.descricaoTarefa) &&
+                Objects.equals(idUsuario, tarefa.idUsuario) &&
+                Objects.equals(completa, tarefa.completa);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTarefa, descricaoTarefa, idUsuario, completa);
     }
 }

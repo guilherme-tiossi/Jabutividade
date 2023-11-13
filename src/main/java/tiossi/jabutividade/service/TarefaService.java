@@ -15,7 +15,7 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
-    public Tarefa editaTarefa(Tarefa tarefa) {
+    public Tarefa editarTarefa(Tarefa tarefa) {
         Tarefa tarefaExistente = tarefaRepository.findById(tarefa.getIdTarefa()).orElse(null);
 
         if (tarefaExistente != null) {
@@ -28,7 +28,7 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
-    public void deletaTarefa(String idTarefa) {
+    public void deletarTarefa(String idTarefa) {
         tarefaRepository.deleteById(idTarefa);
     }
 }

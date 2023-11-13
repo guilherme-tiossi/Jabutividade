@@ -12,7 +12,7 @@ import tiossi.jabutividade.model.Tarefa;
 import tiossi.jabutividade.service.TarefaService;
 
 @RestController
-@RequestMapping("/tarefas")
+@RequestMapping("/apiTarefa")
 public class TarefaAPIController {
     
     @Autowired
@@ -25,7 +25,7 @@ public class TarefaAPIController {
 
     @DeleteMapping("/{idTarefa}")
     public ResponseEntity<Void> deletaTarefa(@PathVariable String idTarefa) {
-        tarefaService.deletaTarefa(idTarefa);
+        tarefaService.deletarTarefa(idTarefa);
         return ResponseEntity.ok().build();
     }
 }
