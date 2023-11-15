@@ -29,7 +29,7 @@ export class CriacaoTarefasComponent {
         this.mensagem = `Tarefa enviada com sucesso!`;
       },
       (error) => {
-        this.mensagem = `baguio embaçou...`;
+        this.mensagem = `Erro encontrado!...`;
       }
     )
   }
