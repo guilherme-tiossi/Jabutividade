@@ -2,7 +2,9 @@
     <p> Olá, Jabutividade! </p>
     <form (ngSubmit)="onSubmit()">
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" [(ngModel)]="nome" required>
+        <input type="text" id="tarefa" name="tarefa" [(ngModel)]="tarefa" required>
+        <input type="text" id="idUsuario" name="idUsuario" [(ngModel)]="idUsuario" required>
+        <!-- <input type="checkbox" id="completa" name="completa" [(ngModel)]="completa" required> -->
         <button type="submit">Dizer Olá</button> 
     </form>
 </div>

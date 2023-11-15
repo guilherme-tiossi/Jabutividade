@@ -1,16 +1,36 @@
 import { Component } from '@angular/core';
+import { TarefaService } from '../tarefa.service';
 
 @Component({
   selector: 'app-criacao-tarefas',
   templateUrl: './criacao-tarefas.component.html',
-  styleUrls: ['./criacao-tarefas.component.css']
+  styleUrls: ['./criacao-tarefas.component.css'],
+  providers: [TarefaService]
 })
 
 export class CriacaoTarefasComponent {
-  nome: string = 'sorriso ronaldo';
+  tarefa: string = '';
+  idUsuario: string = '';
+  completa: boolean = false;
   mensagem: string = '';
 
+  constructor(private tarefaService: TarefaService) {}
+
   onSubmit() {
-    this.mensagem = `Olá, ${this.nome}!`; 
+
+    const tarefaData = {
+      descricaoTarefa: this.tarefa,
+      idUsuario: this.idUsuario,
+      completa: this.completa
+    }
+
+    this.tarefaService.salvarTarefa(tarefaData).subscribe(
+      (response) => {
+        this.mensagem = `Tarefa enviada com sucesso!`;
+      },
+      (error) => {
+        this.mensagem = `baguio embaçou...`;
+      }
+    )
   }
 }
