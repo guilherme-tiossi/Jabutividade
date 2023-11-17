@@ -1,5 +1,7 @@
 package tiossi.jabutividade.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,9 @@ public class TarefaService {
 
     public void deletarTarefa(String idTarefa) {
         tarefaRepository.deleteById(idTarefa);
+    }
+
+    public List<Tarefa> listarTarefasPorUsuario(String idUsuario) {
+        return tarefaRepository.findByIdUsuario(idUsuario);
     }
 }

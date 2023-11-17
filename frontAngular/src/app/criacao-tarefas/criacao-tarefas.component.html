@@ -10,3 +10,25 @@
 </div>
 
 <p *ngIf="mensagem"> {{mensagem}} </p>
+
+  <!-- Tabela de Tarefas -->
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Usuário</th>
+        <th>Completa</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tarefa of tarefas">
+        <td>{{ tarefa.idTarefa }}</td>
+        <td>{{ tarefa.descricaoTarefa }}</td>
+        <td>{{ tarefa.idUsuario }}</td>
+        <td>{{ tarefa.completa ? 'Sim' : 'Não' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

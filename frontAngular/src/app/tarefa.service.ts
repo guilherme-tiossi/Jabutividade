@@ -21,4 +21,8 @@ export class TarefaService {
 
     return this.http.post<any>(this.apiUrl, tarefa, httpOptions);
   }
+
+  listarTarefasPorUsuario(idUsuario: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/1`);
+  }
 }

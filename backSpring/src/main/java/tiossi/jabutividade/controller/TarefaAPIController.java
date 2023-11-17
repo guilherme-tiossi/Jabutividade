@@ -2,13 +2,16 @@ package tiossi.jabutividade.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tiossi.jabutividade.model.Tarefa;
+import java.util.List;
 import tiossi.jabutividade.service.TarefaService;
 
 @RestController
@@ -27,5 +30,10 @@ public class TarefaAPIController {
     public ResponseEntity<Void> deletaTarefa(@PathVariable String idTarefa) {
         tarefaService.deletarTarefa(idTarefa);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{idUsuario}")
+    public List<Tarefa> listarTarefasPorUsuario(@PathVariable String idUsuario) {
+        return tarefaService.listarTarefasPorUsuario(idUsuario);
     }
 }

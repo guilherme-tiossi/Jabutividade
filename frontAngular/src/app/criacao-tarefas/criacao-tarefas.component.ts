@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TarefaService } from '../tarefa.service';
 
 @Component({
@@ -8,13 +8,18 @@ import { TarefaService } from '../tarefa.service';
   providers: [TarefaService]
 })
 
-export class CriacaoTarefasComponent {
+export class CriacaoTarefasComponent implements OnInit{
   tarefa: string = '';
   idUsuario: string = '';
   completa: boolean = false;
   mensagem: string = '';
+  tarefas: any[] = [];
 
   constructor(private tarefaService: TarefaService) {}
+
+  ngOnInit() {
+    this.carregarTarefas()
+  } 
 
   onSubmit() {
 
@@ -26,9 +31,21 @@ export class CriacaoTarefasComponent {
 
     this.tarefaService.salvarTarefa(tarefaData).subscribe(
       (response) => {
-        this.mensagem = `Tarefa enviada com sucesso!`;
+        // this.mensagem = `Tarefa enviada com sucesso!`;
+        this.carregarTarefas();
       },
       (error) => {
+        this.mensagem = `Erro encontrado!...`;
+      }
+    )
+  }
+
+  carregarTarefas() {
+    this.tarefaService.listarTarefasPorUsuario("1").subscribe(
+      (data) => {
+        this.tarefas = data;
+      },
+      (erros) => {
         this.mensagem = `Erro encontrado!...`;
       }
     )

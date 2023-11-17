@@ -14,7 +14,6 @@ public class Tarefa {
     private Boolean completa;
 
     public Tarefa() {
-        this.idTarefa = "";
         this.descricaoTarefa = "";
         this.idUsuario = "";
         this.completa = false;
