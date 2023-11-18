@@ -19,10 +19,13 @@ public class WebConfig {
                     .allowedOrigins("http://localhost:4200")
                     .allowedMethods(HttpMethod.GET.name(),
                                     HttpMethod.POST.name(),
+                                    HttpMethod.PUT.name(),
                                     HttpMethod.DELETE.name(),
                                     HttpMethod.OPTIONS.name())
                     .allowedHeaders(HttpHeaders.CONTENT_TYPE,
-                                    HttpHeaders.AUTHORIZATION);
+                                    HttpHeaders.AUTHORIZATION)
+                    .allowCredentials(true)
+                    .maxAge(3600);
             }
         };
     }

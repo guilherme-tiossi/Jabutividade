@@ -25,4 +25,9 @@ export class TarefaService {
   listarTarefasPorUsuario(idUsuario: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/1`);
   }
+
+  completarTarefa(idTarefa: string, completo: boolean): Observable<any> {
+    const completaHTTP: boolean = !completo; 
+    return this.http.put(`${this.apiUrl}/completarTarefa/${idTarefa}`, completaHTTP);
+  }  
 }

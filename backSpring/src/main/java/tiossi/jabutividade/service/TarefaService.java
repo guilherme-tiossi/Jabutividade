@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
 import tiossi.jabutividade.model.Tarefa;
 import tiossi.jabutividade.repository.TarefaRepository;
@@ -32,6 +33,16 @@ public class TarefaService {
 
     public void deletarTarefa(String idTarefa) {
         tarefaRepository.deleteById(idTarefa);
+    }
+
+    public void completarTarefa(String idTarefa, Boolean completa) {
+        List<Tarefa> tarefas = tarefaRepository.findByIdTarefa(idTarefa);
+
+        if (!tarefas.isEmpty()) {
+            Tarefa tarefa = tarefas.get(0);
+            tarefa.setCompleta(completa);
+            tarefaRepository.save(tarefa);
+        }
     }
 
     public List<Tarefa> listarTarefasPorUsuario(String idUsuario) {

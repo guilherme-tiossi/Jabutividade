@@ -1,11 +1,11 @@
 <div>
     <p> Olá, Jabutividade! </p>
-    <form (ngSubmit)="onSubmit()">
+    <form #criarTarefaForm="ngForm" (ngSubmit)="onSubmit()">
         <label for="nome">Nome:</label>
         <input type="text" id="tarefa" name="tarefa" [(ngModel)]="tarefa" required>
         <input type="text" id="idUsuario" name="idUsuario" [(ngModel)]="idUsuario" required>
         <!-- <input type="checkbox" id="completa" name="completa" [(ngModel)]="completa" required> -->
-        <button type="submit">Dizer Olá</button> 
+        <button type="submit">Cadastrar</button> 
     </form>
 </div>
 
@@ -27,7 +27,7 @@
         <td>{{ tarefa.idTarefa }}</td>
         <td>{{ tarefa.descricaoTarefa }}</td>
         <td>{{ tarefa.idUsuario }}</td>
-        <td>{{ tarefa.completa ? 'Sim' : 'Não' }}</td>
+        <td> <input type="checkbox" id="completar" name="completar" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> </td>
       </tr>
     </tbody>
   </table>

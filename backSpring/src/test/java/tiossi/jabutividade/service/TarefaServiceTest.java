@@ -87,4 +87,9 @@ public class TarefaServiceTest {
         verify(tarefaRepository, times(2)).save(any(Tarefa.class));
     }
 
+    // @Test
+    // void testeCompletarTarefa() {
+    //     Tarefa tarefa = new Tarefa
+    // }
+
 }

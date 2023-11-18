@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,12 @@ public class TarefaAPIController {
     @DeleteMapping("/{idTarefa}")
     public ResponseEntity<Void> deletaTarefa(@PathVariable String idTarefa) {
         tarefaService.deletarTarefa(idTarefa);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/completarTarefa/{idTarefa}")
+    public ResponseEntity<Void> completarTarefa(@PathVariable String idTarefa, @RequestBody Boolean completa) {
+        tarefaService.completarTarefa(idTarefa, completa);
         return ResponseEntity.ok().build();
     }
 
