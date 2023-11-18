@@ -87,9 +87,20 @@ public class TarefaServiceTest {
         verify(tarefaRepository, times(2)).save(any(Tarefa.class));
     }
 
-    // @Test
-    // void testeCompletarTarefa() {
-    //     Tarefa tarefa = new Tarefa
-    // }
+    @Test
+    void testeCompletarTarefa() {
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
+
+        when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
+
+        tarefaService.completarTarefa("1", true);
+
+        verify(tarefaRepository, times(1)).findByIdTarefa("1");
+        verify(tarefaRepository, times(1)).save(any(Tarefa.class));
+
+        Tarefa tarefaAtualizada = tarefaRepository.findByIdTarefa("1").get(0);
+
+        assertEquals(tarefaAtualizada.getCompleta(), true);
+    }
 
 }
