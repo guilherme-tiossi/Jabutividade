@@ -1,0 +1,8 @@
+<form #cadastroUsuarioForm="ngForm" (ngSubmit)="onSubmit()">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" [(ngModel)]="idEmail" required>
+    <input type="password" id="senha" name="senha" [(ngModel)]="idSenha" required>
+    <button type="submit">Cadastrar</button> 
+</form>
+
+<p *ngIf="mensagem"> {{mensagem}} </p>

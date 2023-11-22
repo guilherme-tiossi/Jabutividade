@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { CriacaoTarefasComponent } from './criacao-tarefas/criacao-tarefas.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CriacaoTarefasComponent
+    CriacaoTarefasComponent,
+    CadastroComponent
   ],
   imports: [
     BrowserModule,
