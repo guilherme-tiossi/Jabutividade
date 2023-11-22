@@ -4,6 +4,7 @@ import { CriacaoTarefasComponent } from './criacao-tarefas/criacao-tarefas.compo
 
 const routes: Routes = [
   {path: 'criacao-tarefas', component: CriacaoTarefasComponent}
+  // {path: 'criacao-tarefas', component: CriacaoTarefasComponent}
 ];
 
 @NgModule({

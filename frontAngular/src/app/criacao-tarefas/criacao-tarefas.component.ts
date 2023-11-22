@@ -63,7 +63,17 @@ export class CriacaoTarefasComponent implements OnInit{
         this.mensagem = `Erro encontrado!...`;
       }
     )
-    console.log(idTarefa)
+  }
+
+  deletarTarefa(idTarefa : string) {
+    this.tarefaService.deletarTarefa(idTarefa).subscribe(
+      (data) => {
+        this.carregarTarefas();
+      },
+      (erros) => {
+        this.mensagem = `Erro encontrado!...`;
+      }
+    )
   }
 
   limparFormulario() {

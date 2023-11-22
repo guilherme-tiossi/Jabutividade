@@ -30,4 +30,8 @@ export class TarefaService {
     const completaHTTP: boolean = !completo; 
     return this.http.put(`${this.apiUrl}/completarTarefa/${idTarefa}`, completaHTTP);
   }  
+
+  deletarTarefa(idTarefa: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${idTarefa}`)
+  }
 }

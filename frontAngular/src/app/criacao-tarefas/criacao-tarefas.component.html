@@ -13,22 +13,11 @@
 
   <!-- Tabela de Tarefas -->
 <div>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Descrição</th>
-        <th>Usuário</th>
-        <th>Completa</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let tarefa of tarefas">
-        <td>{{ tarefa.idTarefa }}</td>
+  <table style="border-collapse: collapse;">
+      <tr *ngFor="let tarefa of tarefas" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
         <td>{{ tarefa.descricaoTarefa }}</td>
-        <td>{{ tarefa.idUsuario }}</td>
         <td> <input type="checkbox" id="completar" name="completar" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> </td>
+        <td> <button (click)="deletarTarefa(tarefa.idTarefa)"> X </button></td>
       </tr>
-    </tbody>
   </table>
 </div>

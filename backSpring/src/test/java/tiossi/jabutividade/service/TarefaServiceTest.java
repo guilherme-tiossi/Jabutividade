@@ -66,7 +66,7 @@ public class TarefaServiceTest {
         
         Mockito.when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa).thenReturn(tarefa2);
         System.out.println("teste");
-        Mockito.when(tarefaRepository.findByIdUsuario("usuario1")).thenReturn(Arrays.asList(tarefa, tarefa2));
+        Mockito.when(tarefaRepository.findByIdUsuarioOrderByCompleta("usuario1")).thenReturn(Arrays.asList(tarefa, tarefa2));
 
         Tarefa resultadoCriacao = tarefaService.criarTarefa(tarefa);
         Tarefa resultadoCriacao2 = tarefaService.criarTarefa(tarefa2);
@@ -83,7 +83,7 @@ public class TarefaServiceTest {
         assertTrue(tarefasDoUsuario.contains(tarefa));
         assertTrue(tarefasDoUsuario.contains(tarefa2));
 
-        verify(tarefaRepository, times(1)).findByIdUsuario("usuario1");
+        verify(tarefaRepository, times(1)).findByIdUsuarioOrderByCompleta("usuario1");
         verify(tarefaRepository, times(2)).save(any(Tarefa.class));
     }
 

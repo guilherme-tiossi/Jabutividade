@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import tiossi.jabutividade.model.Tarefa;
 import tiossi.jabutividade.repository.TarefaRepository;
@@ -46,6 +45,6 @@ public class TarefaService {
     }
 
     public List<Tarefa> listarTarefasPorUsuario(String idUsuario) {
-        return tarefaRepository.findByIdUsuario(idUsuario);
+        return tarefaRepository.findByIdUsuarioOrderByCompleta(idUsuario);
     }
 }
