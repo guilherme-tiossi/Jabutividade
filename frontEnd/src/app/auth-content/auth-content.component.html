@@ -1,0 +1,21 @@
+<app-home />
+
+<div>
+    <p> Olá, Jabutividade! </p>
+    <form #criarTarefaForm="ngForm" (ngSubmit)="onSubmit()">
+        <label for="nome">Nome:</label>
+        <input type="text" id="tarefa" name="tarefa" [(ngModel)]="tarefa" required>
+        <input type="hidden" id="idUsuario" name="idUsuario" [value]="idUsuario" required>
+        <button type="submit">Cadastrar</button> 
+    </form>
+</div>
+
+<div>
+    <table style="border-collapse: collapse;">
+        <tr *ngFor="let tarefa of tarefas" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
+          <td>{{ tarefa.descricaoTarefa }}</td>
+          <td> <input type="checkbox" id="completar" name="completar" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> </td>
+          <td> <button (click)="deletarTarefa(tarefa.idTarefa)"> X </button></td>
+        </tr>
+    </table>
+</div>

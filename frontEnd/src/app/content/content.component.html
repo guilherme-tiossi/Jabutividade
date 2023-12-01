@@ -1,0 +1,13 @@
+<div *ngIf="componentToShow == 'login'">
+    <app-login-form  (onSubmitLoginEvent)="onLogin($event)" />
+    <app-register-form (onSubmitRegisterEvent)="onRegister($event)" />
+</div>
+
+
+
+<button *ngIf="componentToShow == 'home'" (click)="logout()"> Logout </button>
+<app-auth-content *ngIf="componentToShow == 'home'"/>
+
+<div *ngIf="errorMessages.length > 0" class="error-messages">
+    <div *ngFor="let errorMessage of errorMessages">{{ errorMessage }}</div>
+  </div>
