@@ -34,6 +34,11 @@ public class TarefaApiController {
         return tarefaService.criarTarefa(tarefa);
     }
 
+    @PutMapping("/editar")
+    public Tarefa editarTarefa(@RequestBody Tarefa tarefa) {
+        return tarefaService.editarTarefa(tarefa);
+    }
+
     @DeleteMapping("/{idTarefa}")
     public ResponseEntity<Void> deletaTarefa(@PathVariable String idTarefa) {
         tarefaService.deletarTarefa(idTarefa);

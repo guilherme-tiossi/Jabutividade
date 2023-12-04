@@ -65,10 +65,10 @@ public class TarefaServiceTest {
     void testeListarTarefas() {
         Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
         Tarefa tarefa2 = new Tarefa("2", "descricao2", "usuario1", true);
-        
+
         Mockito.when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa).thenReturn(tarefa2);
-        System.out.println("teste");
-        Mockito.when(tarefaRepository.findByIdUsuarioOrderByCompleta("usuario1")).thenReturn(Arrays.asList(tarefa, tarefa2));
+        Mockito.when(tarefaRepository.findByIdUsuarioOrderByCompleta("usuario1"))
+                .thenReturn(Arrays.asList(tarefa, tarefa2));
 
         Tarefa resultadoCriacao = tarefaService.criarTarefa(tarefa);
         Tarefa resultadoCriacao2 = tarefaService.criarTarefa(tarefa2);
@@ -77,7 +77,7 @@ public class TarefaServiceTest {
         assert resultadoCriacao.getIdTarefa().equals("1");
         assert resultadoCriacao2 != null;
         assert resultadoCriacao2.getIdTarefa().equals("2");
-        
+
         List<Tarefa> tarefasDoUsuario = tarefaService.listarTarefasPorUsuario("usuario1");
 
         assertNotNull(tarefasDoUsuario);
@@ -103,6 +103,23 @@ public class TarefaServiceTest {
         Tarefa tarefaAtualizada = tarefaRepository.findByIdTarefa("1").get(0);
 
         assertEquals(tarefaAtualizada.getCompleta(), true);
+    }
+
+    @Test
+    void testeEditarTarefa() {
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
+        Tarefa tarefaAlterar = new Tarefa("1", "descricao2", "usuario1", false);
+
+        when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
+
+        tarefaService.editarTarefa(tarefaAlterar);
+
+        verify(tarefaRepository, times(1)).findByIdTarefa("1");
+        verify(tarefaRepository, times(1)).save(any(Tarefa.class));
+
+        Tarefa tarefaAtualizada = tarefaRepository.findByIdTarefa("1").get(0);
+
+        assertEquals(tarefaAtualizada.getDescricaoTarefa(), "descricao2");
     }
 
 }

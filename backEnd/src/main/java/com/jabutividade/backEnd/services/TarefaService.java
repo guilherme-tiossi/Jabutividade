@@ -18,7 +18,7 @@ public class TarefaService {
     }
 
     public Tarefa editarTarefa(Tarefa tarefa) {
-        Tarefa tarefaExistente = tarefaRepository.findById(tarefa.getIdTarefa()).orElse(null);
+        Tarefa tarefaExistente = tarefaRepository.findByIdTarefa(tarefa.getIdTarefa()).get(0);
 
         if (tarefaExistente != null) {
             tarefaExistente.setDescricaoTarefa(tarefa.getDescricaoTarefa());
