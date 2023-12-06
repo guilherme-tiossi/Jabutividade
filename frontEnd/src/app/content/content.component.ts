@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AxiosService } from '../axios.service';
-
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
@@ -8,23 +7,35 @@ import { AxiosService } from '../axios.service';
 })
 export class ContentComponent implements OnInit {
 
-  componentToShow: string = 'login';
+  componentToShow: string = 'carregando';
   errorMessages: string[] = [];
 
   constructor(private axiosService: AxiosService) { }
 
-  ngOnInit() {
-    // Verifica se há um token de autenticação no localStorage
-    const authToken = this.axiosService.getAuthToken();
-    const idUser = this.axiosService.getIdUser();
 
-    if (authToken) {
-      // Se existir, define o token na instância do serviço
-      this.axiosService.setAuthToken(authToken);
-      this.axiosService.setIdUser(idUser);
-      this.componentToShow = 'home';  // Define como 'home' se autenticado
+  ngOnInit() {
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken != null) {
+      this.validarToken(authToken)
+        .then((validToken) => {
+          if (validToken) {
+            const idUser = this.axiosService.getIdUser();
+            this.axiosService.setAuthToken(authToken);
+            this.axiosService.setIdUser(idUser);
+            this.componentToShow = 'home';
+          } else {
+            this.axiosService.setAuthToken(null);
+            this.axiosService.setIdUser(null);
+            this.componentToShow = 'login';
+          }
+        })
+        .catch(error => {
+          this.axiosService.setAuthToken(null);
+          this.axiosService.setIdUser(null);
+          this.componentToShow = 'login';
+        });
     } else {
-      // Se não existir, limpa o token na instância do serviço e define como 'login'
       this.axiosService.setAuthToken(null);
       this.axiosService.setIdUser(null);
       this.componentToShow = 'login';
@@ -35,6 +46,18 @@ export class ContentComponent implements OnInit {
     this.componentToShow = componentToShow;
   }
 
+  async validarToken(token: string): Promise<boolean> {
+    let result = false;
+    const response = await this.axiosService.request(
+      "GET",
+      "/validar-token/" + token,
+      {}
+    ).then(response => {
+      result = true;
+    })
+    return result;
+  }
+
   onLogin(input: any): void {
     this.axiosService.request(
       "POST",
@@ -43,13 +66,13 @@ export class ContentComponent implements OnInit {
         login: input.login,
         password: input.password
       }
-    ).then(response => { 
+    ).then(response => {
       this.errorMessages = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
       this.componentToShow = "home";
     }).catch(error => {
-        this.handleError(error);
+      this.handleError(error, "login");
     })
   }
 
@@ -61,17 +84,15 @@ export class ContentComponent implements OnInit {
         username: input.login,
         password: input.password
       }
-    ).then(response => { 
+    ).then(response => {
       this.errorMessages = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
       this.componentToShow = "home";
     }).catch(
-    error => {
-        this.axiosService.setAuthToken(null);
-        this.axiosService.setIdUser(null);
-        this.componentToShow = "login";
-    })
+      error => {
+        this.handleError(error, "cadastro");
+      })
   }
 
   logout(): void {
@@ -80,7 +101,7 @@ export class ContentComponent implements OnInit {
     this.componentToShow = "login";
   }
 
-  private handleError(error: any): void {
+  private handleError(error: any, caso: string): void {
     this.axiosService.setAuthToken(null);
     this.axiosService.setIdUser(null);
     this.componentToShow = "login";
@@ -88,7 +109,7 @@ export class ContentComponent implements OnInit {
     if (error.response && error.response.data && error.response.data.error) {
       this.errorMessages = error.response.data.error;
     } else {
-      this.errorMessages.push("Ocorreu um erro durante o login");
+      this.errorMessages.push("Ocorreu um erro durante o " + caso);
     }
   }
 

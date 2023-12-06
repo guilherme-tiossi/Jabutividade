@@ -8,14 +8,13 @@ import { AxiosService } from '../axios.service';
   styleUrls: ['./tarefas.component.css']
 })
 export class TarefasComponent implements OnInit {
-  inputDescricaoTarefa: string = '';
-  idUsuario: string | null = window.localStorage.getItem("id_user");
-  completa: boolean = false;
-  mensagem: string = '';
-  tarefas: any[] = [];
-  IDTarefaParaEditar: string = '';
+  IDUSUARIO: string | null = window.localStorage.getItem("id_user");
+  formCriarDescricaoTarefa: string = '';
+  listaExibicaoTarefas: any[] = [];
+  edicaoIdTarefa: string = '';
+  edicaoNovaDescricaotarefa: string = '';
 
-  @ViewChild('criarTarefaForm', { static: false }) criarTarefaForm!: NgForm;
+  @ViewChild('FormCriarTarefa', { static: false }) FormCriarTarefa!: NgForm;
 
   constructor(private axiosService: AxiosService) { }
 
@@ -23,17 +22,33 @@ export class TarefasComponent implements OnInit {
     this.carregarTarefas()
   }
 
+  limparFormulario() {
+    this.FormCriarTarefa.resetForm();
+  }
+
+  editarTarefaForm(idTarefa: string) {
+    this.edicaoIdTarefa = this.edicaoIdTarefa == idTarefa ? '' : idTarefa;
+    this.edicaoNovaDescricaotarefa = this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).descricaoTarefa;
+    this.carregarTarefas()
+  }
+
   onSubmit() {
     const tarefaData = {
-      descricaoTarefa: this.inputDescricaoTarefa,
-      idUsuario: this.idUsuario,
-      completa: this.completa
+      descricaoTarefa: this.formCriarDescricaoTarefa,
+      idUsuario: this.IDUSUARIO,
+      completa: false
     }
 
+    this.salvarTarefa(tarefaData);
+  }
+
+
+
+  salvarTarefa(tarefa: any) {
     this.axiosService.request(
       "POST",
       "/api",
-      tarefaData
+      tarefa
     ).then(
       (response) => {
         this.carregarTarefas();
@@ -48,10 +63,10 @@ export class TarefasComponent implements OnInit {
   carregarTarefas() {
     this.axiosService.request(
       "GET",
-      "/api/" + this.idUsuario,
+      "/api/" + this.IDUSUARIO,
       {}).then(
         (response) => {
-          this.tarefas = response.data;
+          this.listaExibicaoTarefas = response.data;
         }).catch(
           (error) => {
             console.log("erro");
@@ -59,17 +74,31 @@ export class TarefasComponent implements OnInit {
         );
   }
 
-  limparFormulario() {
-    this.criarTarefaForm.resetForm();
-  }
+  editarTarefa(idTarefa: string) {
+    console.log(this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).descricaoTarefa)
+    console.log(this.edicaoNovaDescricaotarefa)
 
-  editarTarefaForm(idTarefa: string) {
-    this.IDTarefaParaEditar = this.IDTarefaParaEditar == idTarefa ? '' : idTarefa;
-    this.carregarTarefas()
-  }
+    const tarefaData = {
+      idTarefa: idTarefa,
+      descricaoTarefa: this.edicaoNovaDescricaotarefa,
+      idUsuario: this.IDUSUARIO,
+      completa: this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).completa
+    }
 
-  edicaoTarefa(idTarefa : string) {
-    console.log("editar tarefa confirmada")
+    this.axiosService.request(
+      "PUT",
+      "/api/editar",
+      tarefaData
+    ).then(
+      (response) => {
+        console.log("tarefa editada!");
+        this.edicaoIdTarefa = '';
+        this.carregarTarefas();
+      }).catch(
+        (error) => {
+          console.log("erro");
+        }
+      )
   }
 
   completarTarefa(idTarefa: string, completo: boolean) {

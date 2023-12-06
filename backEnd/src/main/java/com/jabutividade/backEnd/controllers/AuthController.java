@@ -2,7 +2,10 @@ package com.jabutividade.backEnd.controllers;
 
 import java.net.URI;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +16,12 @@ import com.jabutividade.backEnd.dto.SignUpDto;
 import com.jabutividade.backEnd.dto.UserDto;
 import com.jabutividade.backEnd.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -36,4 +44,14 @@ public class AuthController {
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
+    @GetMapping("/validar-token/{token}")
+    public ResponseEntity<Authentication> validarToken(@PathVariable String token) {
+        Authentication authentication = userAuthProvider.validateToken(token);    
+
+        if (authentication != null) {
+            return ResponseEntity.ok(authentication);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }

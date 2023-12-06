@@ -4,6 +4,10 @@
 </div>
 
 
+<div *ngIf="componentToShow == 'carregando'">
+    <app-carregando></app-carregando>
+</div>
+
 
 <button *ngIf="componentToShow == 'home'" (click)="logout()"> Logout </button>
 <app-auth-content *ngIf="componentToShow == 'home'"/>

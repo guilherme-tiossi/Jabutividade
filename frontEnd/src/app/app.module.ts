@@ -10,6 +10,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { AuthContentComponent } from './auth-content/auth-content.component';
 import { TarefasComponent } from './tarefas/tarefas.component';
+import { CarregandoComponent } from './carregando/carregando.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TarefasComponent } from './tarefas/tarefas.component';
     HomeComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    TarefasComponent
+    TarefasComponent,
+    CarregandoComponent
   ],
   imports: [
     BrowserModule,
