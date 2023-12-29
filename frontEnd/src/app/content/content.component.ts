@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AxiosService } from '../axios.service';
+import { SharedService } from '../shared.service';
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
@@ -10,10 +11,13 @@ export class ContentComponent implements OnInit {
   componentToShow: string = 'carregando';
   errorMessages: string[] = [];
 
-  constructor(private axiosService: AxiosService) { }
-
+  constructor(private axiosService: AxiosService, private sharedService: SharedService) { }
 
   ngOnInit() {
+    this.sharedService.componentToShow$.subscribe(componentToShow => {
+      this.componentToShow = componentToShow;
+    });
+    
     const authToken = this.axiosService.getAuthToken();
 
     if (authToken != null) {

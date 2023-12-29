@@ -1,5 +1,8 @@
 <div *ngIf="componentToShow == 'login'">
     <app-login-form  (onSubmitLoginEvent)="onLogin($event)" />
+</div>
+
+<div *ngIf="componentToShow == 'cadastro'">
     <app-register-form (onSubmitRegisterEvent)="onRegister($event)" />
 </div>
 

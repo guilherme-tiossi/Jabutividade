@@ -1,7 +1,8 @@
 <form (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
-    <label for="loginName"> Login: </label>
+    <label for="loginName"> Usuário: </label>
     <input type="text" id="loginName" name="login" [(ngModel)]="login" />
     <label for="passwordName"> Senha: </label>
     <input type="password" id="passwordName" name="password" [(ngModel)]="password" />
+    <a (click)="sharedService.showComponent('cadastro')">Não tenho conta</a>
     <button type="submit"> Realizar Login </button>
 </form>

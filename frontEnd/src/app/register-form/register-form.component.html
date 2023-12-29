@@ -3,5 +3,6 @@
     <input type="text" id="loginName" name="login" [(ngModel)]="login" />
     <label for="passwordName"> Senha: </label>
     <input type="password" id="passwordName" name="password" [(ngModel)]="password" />
+    <a (click)="sharedService.showComponent('login')">Já tenho conta</a>
     <button type="submit"> Realizar Cadastro </button>
 </form>

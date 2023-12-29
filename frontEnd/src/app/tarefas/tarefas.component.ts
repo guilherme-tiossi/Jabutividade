@@ -13,6 +13,7 @@ export class TarefasComponent implements OnInit {
   listaExibicaoTarefas: any[] = [];
   edicaoIdTarefa: string = '';
   edicaoNovaDescricaotarefa: string = '';
+  errorMessages: string[] = [];
 
   @ViewChild('FormCriarTarefa', { static: false }) FormCriarTarefa!: NgForm;
 
@@ -75,9 +76,6 @@ export class TarefasComponent implements OnInit {
   }
 
   editarTarefa(idTarefa: string) {
-    console.log(this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).descricaoTarefa)
-    console.log(this.edicaoNovaDescricaotarefa)
-
     const tarefaData = {
       idTarefa: idTarefa,
       descricaoTarefa: this.edicaoNovaDescricaotarefa,
@@ -91,12 +89,11 @@ export class TarefasComponent implements OnInit {
       tarefaData
     ).then(
       (response) => {
-        console.log("tarefa editada!");
         this.edicaoIdTarefa = '';
         this.carregarTarefas();
       }).catch(
         (error) => {
-          console.log("erro");
+          this.handleError(error, "criação de tarefa!")
         }
       )
   }
@@ -108,11 +105,10 @@ export class TarefasComponent implements OnInit {
       !completo
     ).then(
       (response) => {
-        console.log("tarefa completada.");
         this.carregarTarefas();
       }).catch(
         (error) => {
-          console.log("erro");
+          this.handleError(error, "a finalização de tarefa!")
         }
       );
   }
@@ -123,12 +119,20 @@ export class TarefasComponent implements OnInit {
       "/api/" + idTarefa,
       {}).then(
         (response) => {
-          console.log("tarefa deletada.")
           this.carregarTarefas()
         }).catch(
           (error) => {
-            console.log("erro")
+            this.handleError(error, "a deleção de tarefa!")
           }
         );
+  }
+
+  private handleError(error: any, caso: string): void {
+    this.errorMessages = [];
+    if (error.response && error.response.data && error.response.data.error) {
+      this.errorMessages = error.response.data.error;
+    } else {
+      this.errorMessages.push("Ocorreu um erro durante " + caso);
+    }
   }
 }

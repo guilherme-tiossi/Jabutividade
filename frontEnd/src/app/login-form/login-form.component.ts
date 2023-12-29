@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-login-form',
@@ -8,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   providers: [FormsModule]
 })
 export class LoginFormComponent {
-
+  constructor(public sharedService: SharedService) {}
   @Output() onSubmitLoginEvent = new EventEmitter();
 
   login: string = "";
@@ -16,6 +17,10 @@ export class LoginFormComponent {
 
   onSubmitLogin(): void {
     this.onSubmitLoginEvent.emit({"login": this.login, "password": this.password});
+  }
+  
+  showComponentEvent(componentToShow: string): void {
+    this.sharedService.showComponent(componentToShow);
   }
 
 }
