@@ -15,6 +15,6 @@
 <button *ngIf="componentToShow == 'home'" (click)="logout()"> Logout </button>
 <app-auth-content *ngIf="componentToShow == 'home'"/>
 
-<div *ngIf="errorMessages.length > 0" class="error-messages">
-    <div *ngFor="let errorMessage of errorMessages">{{ errorMessage }}</div>
+<div *ngIf="mensagensErro.length > 0" class="error-messages">
+    <div *ngFor="let errorMessage of mensagensErro">{{ errorMessage }}</div>
   </div>

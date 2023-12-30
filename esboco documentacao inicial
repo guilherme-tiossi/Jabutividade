@@ -1,0 +1,15 @@
+FRONT-ANGULAR
+    CONVENÇÕES DE NOMEAÇÃO:
+        > cameltoe (primeiraSegunda)
+        > nomeFuncionalide (descricaoTarefaForm)
+componentes:
+    auth-content: feito para gerenciar os diferentes conteúdos exibidos após o login bem sucedido;
+    carregando:   feito para exibir uma tela amigável para o usuário quando uma operação estiver em andamento;
+    content:      feito para gerenciar a exibição de diferentes conteúdos, principalmente aqueles relacionados ao login e logout;
+    menu:       feito para gerenciar o menu pós-login 
+    login-form:   autoexplicativo
+    register-f.:  autoexplicativo
+    tarefas:      feito para gerenciar a tela e funcionalidades de tarefas  
+
+
+BACK-SPRING

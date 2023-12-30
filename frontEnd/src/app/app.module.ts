@@ -5,23 +5,23 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ContentComponent } from './content/content.component';
-import { HomeComponent } from './home/home.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { AuthContentComponent } from './auth-content/auth-content.component';
 import { TarefasComponent } from './tarefas/tarefas.component';
 import { CarregandoComponent } from './carregando/carregando.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthContentComponent,
     ContentComponent,
-    HomeComponent,
     LoginFormComponent,
     RegisterFormComponent,
     TarefasComponent,
-    CarregandoComponent
+    CarregandoComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

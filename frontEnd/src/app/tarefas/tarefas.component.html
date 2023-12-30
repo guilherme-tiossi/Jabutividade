@@ -1,17 +1,17 @@
 
 <form #FormCriarTarefa="ngForm" (ngSubmit)="onSubmit()">
-    <input type="text" name="txt_formCriarDescricaoTarefa" [(ngModel)]="formCriarDescricaoTarefa" required>
+    <input type="text" name="txt_descricaoTarefaCriacao" [(ngModel)]="descricaoTarefaCriacao" required>
     <input type="hidden" name="idUsuario" [value]="IDUSUARIO" required>
     <button type="submit">Cadastrar</button> 
 </form>
 
 <table style="border-collapse: collapse;">
-    <tr *ngFor="let tarefa of listaExibicaoTarefas" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
-        <td *ngIf="edicaoIdTarefa != tarefa.idTarefa"> 
+    <tr *ngFor="let tarefa of listaTarefasExibicao" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
+        <td *ngIf="idTarefaEdicao != tarefa.idTarefa"> 
             {{ tarefa.descricaoTarefa }}
         </td>
-        <td *ngIf="edicaoIdTarefa == tarefa.idTarefa">  
-            <input type="text" name="inputEdicaoTarefa" [(ngModel)]="edicaoNovaDescricaotarefa"  /> 
+        <td *ngIf="idTarefaEdicao == tarefa.idTarefa">  
+            <input type="text" name="inputEdicaoTarefa" [(ngModel)]="descricaoTarefaEdicao"  /> 
         </td>
 
         <td> 
@@ -23,10 +23,10 @@
         </td>
 
         <td> 
-            <button (click)="editarTarefaForm(tarefa.idTarefa)"> {{ edicaoIdTarefa == tarefa.idTarefa ? "cancel" : "edit" }} </button>
+            <button (click)="editarTarefaForm(tarefa.idTarefa)"> {{ idTarefaEdicao == tarefa.idTarefa ? "cancel" : "edit" }} </button>
         </td>
 
-        <td *ngIf="edicaoIdTarefa == tarefa.idTarefa"> 
+        <td *ngIf="idTarefaEdicao == tarefa.idTarefa"> 
             <button (click)="editarTarefa(tarefa.idTarefa)"> Confirmar </button>
         </td>
     </tr>

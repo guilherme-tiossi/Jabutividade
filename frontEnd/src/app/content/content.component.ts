@@ -9,7 +9,7 @@ import { SharedService } from '../shared.service';
 export class ContentComponent implements OnInit {
 
   componentToShow: string = 'carregando';
-  errorMessages: string[] = [];
+  mensagensErro: string[] = [];
 
   constructor(private axiosService: AxiosService, private sharedService: SharedService) { }
 
@@ -71,7 +71,7 @@ export class ContentComponent implements OnInit {
         password: input.password
       }
     ).then(response => {
-      this.errorMessages = [];
+      this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
       this.componentToShow = "home";
@@ -89,7 +89,7 @@ export class ContentComponent implements OnInit {
         password: input.password
       }
     ).then(response => {
-      this.errorMessages = [];
+      this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
       this.componentToShow = "home";
@@ -109,11 +109,11 @@ export class ContentComponent implements OnInit {
     this.axiosService.setAuthToken(null);
     this.axiosService.setIdUser(null);
     this.componentToShow = "login";
-    this.errorMessages = [];
+    this.mensagensErro = [];
     if (error.response && error.response.data && error.response.data.error) {
-      this.errorMessages = error.response.data.error;
+      this.mensagensErro = error.response.data.error;
     } else {
-      this.errorMessages.push("Ocorreu um erro durante o " + caso);
+      this.mensagensErro.push("Ocorreu um erro durante o " + caso);
     }
   }
 

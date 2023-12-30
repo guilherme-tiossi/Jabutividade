@@ -9,11 +9,11 @@ import { AxiosService } from '../axios.service';
 })
 export class TarefasComponent implements OnInit {
   IDUSUARIO: string | null = window.localStorage.getItem("id_user");
-  formCriarDescricaoTarefa: string = '';
-  listaExibicaoTarefas: any[] = [];
-  edicaoIdTarefa: string = '';
-  edicaoNovaDescricaotarefa: string = '';
-  errorMessages: string[] = [];
+  descricaoTarefaCriacao: string = '';
+  idTarefaEdicao: string = '';
+  descricaoTarefaEdicao: string = '';
+  listaTarefasExibicao: any[] = [];
+  mensagensErro: string[] = [];
 
   @ViewChild('FormCriarTarefa', { static: false }) FormCriarTarefa!: NgForm;
 
@@ -23,19 +23,9 @@ export class TarefasComponent implements OnInit {
     this.carregarTarefas()
   }
 
-  limparFormulario() {
-    this.FormCriarTarefa.resetForm();
-  }
-
-  editarTarefaForm(idTarefa: string) {
-    this.edicaoIdTarefa = this.edicaoIdTarefa == idTarefa ? '' : idTarefa;
-    this.edicaoNovaDescricaotarefa = this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).descricaoTarefa;
-    this.carregarTarefas()
-  }
-
   onSubmit() {
     const tarefaData = {
-      descricaoTarefa: this.formCriarDescricaoTarefa,
+      descricaoTarefa: this.descricaoTarefaCriacao,
       idUsuario: this.IDUSUARIO,
       completa: false
     }
@@ -43,7 +33,15 @@ export class TarefasComponent implements OnInit {
     this.salvarTarefa(tarefaData);
   }
 
+  editarTarefaForm(idTarefa: string) {
+    this.idTarefaEdicao = this.idTarefaEdicao == idTarefa ? '' : idTarefa;
+    this.descricaoTarefaEdicao = this.listaTarefasExibicao.find(tarefa => tarefa.idTarefa === idTarefa).descricaoTarefa;
+    this.carregarTarefas()
+  }
 
+  limparFormulario() {
+    this.FormCriarTarefa.resetForm();
+  }
 
   salvarTarefa(tarefa: any) {
     this.axiosService.request(
@@ -67,7 +65,7 @@ export class TarefasComponent implements OnInit {
       "/api/" + this.IDUSUARIO,
       {}).then(
         (response) => {
-          this.listaExibicaoTarefas = response.data;
+          this.listaTarefasExibicao = response.data;
         }).catch(
           (error) => {
             console.log("erro");
@@ -78,9 +76,9 @@ export class TarefasComponent implements OnInit {
   editarTarefa(idTarefa: string) {
     const tarefaData = {
       idTarefa: idTarefa,
-      descricaoTarefa: this.edicaoNovaDescricaotarefa,
+      descricaoTarefa: this.descricaoTarefaEdicao,
       idUsuario: this.IDUSUARIO,
-      completa: this.listaExibicaoTarefas.find(tarefa => tarefa.idTarefa === idTarefa).completa
+      completa: this.listaTarefasExibicao.find(tarefa => tarefa.idTarefa === idTarefa).completa
     }
 
     this.axiosService.request(
@@ -89,7 +87,7 @@ export class TarefasComponent implements OnInit {
       tarefaData
     ).then(
       (response) => {
-        this.edicaoIdTarefa = '';
+        this.idTarefaEdicao = '';
         this.carregarTarefas();
       }).catch(
         (error) => {
@@ -128,11 +126,11 @@ export class TarefasComponent implements OnInit {
   }
 
   private handleError(error: any, caso: string): void {
-    this.errorMessages = [];
+    this.mensagensErro = [];
     if (error.response && error.response.data && error.response.data.error) {
-      this.errorMessages = error.response.data.error;
+      this.mensagensErro = error.response.data.error;
     } else {
-      this.errorMessages.push("Ocorreu um erro durante " + caso);
+      this.mensagensErro.push("Ocorreu um erro durante " + caso);
     }
   }
 }
