@@ -2,7 +2,6 @@ package com.jabutividade.backEnd.controllers;
 
 import java.net.URI;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,11 +15,9 @@ import com.jabutividade.backEnd.dto.SignUpDto;
 import com.jabutividade.backEnd.dto.UserDto;
 import com.jabutividade.backEnd.services.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

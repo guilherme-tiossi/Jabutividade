@@ -1,5 +1,7 @@
 package com.jabutividade.backEnd.services;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,16 @@ public class TarefaService {
 
     public Tarefa criarTarefa(Tarefa tarefa) {
         return tarefaRepository.save(tarefa);
+    }
+
+    public Integer getOrderTarefa(String idUsuario) {
+        List<Tarefa> tarefasUsuario = listarTarefasPorUsuario(idUsuario);
+        if (tarefasUsuario != null && !tarefasUsuario.isEmpty()) {
+            Collections.sort(tarefasUsuario, Comparator.comparingInt(Tarefa::getOrder));
+            return tarefasUsuario.get(tarefasUsuario.size() - 1).getOrder();
+        } else {
+            return 0;
+        }
     }
 
     public Tarefa editarTarefa(Tarefa tarefa) {

@@ -31,6 +31,7 @@ public class TarefaApiController {
 
     @PostMapping
     public Tarefa criarTarefa(@RequestBody Tarefa tarefa) {
+        tarefa.setOrder(tarefaService.getOrderTarefa(tarefa.getIdUsuario()) + 1);
         return tarefaService.criarTarefa(tarefa);
     }
 

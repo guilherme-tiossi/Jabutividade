@@ -30,7 +30,7 @@ public class TarefaServiceTest {
 
     @Test
     void testeCriarTarefa() {
-        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
 
         when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
 
@@ -47,7 +47,7 @@ public class TarefaServiceTest {
 
     @Test
     void testeDeletarTarefa() {
-        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
 
         Mockito.when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
 
@@ -63,8 +63,8 @@ public class TarefaServiceTest {
 
     @Test
     void testeListarTarefas() {
-        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
-        Tarefa tarefa2 = new Tarefa("2", "descricao2", "usuario1", true);
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
+        Tarefa tarefa2 = new Tarefa("2", "descricao2", "usuario1", true, 0);
 
         Mockito.when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa).thenReturn(tarefa2);
         Mockito.when(tarefaRepository.findByIdUsuarioOrderByCompleta("usuario1"))
@@ -91,7 +91,7 @@ public class TarefaServiceTest {
 
     @Test
     void testeCompletarTarefa() {
-        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
 
         when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
 
@@ -107,8 +107,8 @@ public class TarefaServiceTest {
 
     @Test
     void testeEditarTarefa() {
-        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false);
-        Tarefa tarefaAlterar = new Tarefa("1", "descricao2", "usuario1", false);
+        Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
+        Tarefa tarefaAlterar = new Tarefa("1", "descricao2", "usuario1", false, 1);
 
         when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
 

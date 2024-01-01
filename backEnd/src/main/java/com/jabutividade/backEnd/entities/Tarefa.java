@@ -19,6 +19,7 @@ public class Tarefa {
     private String descricaoTarefa;
     private String idUsuario;
     private Boolean completa;
+    private Integer order;
 
     @Override
     public boolean equals(Object o) {

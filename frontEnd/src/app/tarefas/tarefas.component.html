@@ -7,6 +7,15 @@
 
 <table style="border-collapse: collapse;">
     <tr *ngFor="let tarefa of listaTarefasExibicao" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
+
+        <td *ngIf="tarefa.order > 1"> 
+            <button (click)="aumentarOrderTarefa(tarefa.order)"> ▲ </button>
+        </td>
+
+        <td *ngIf="tarefa.order < tarefa.tamanhoArray"> 
+            <button (click)="abaixarOrderTarefa(tarefa.order)"> ▼ </button>
+        </td>
+
         <td *ngIf="idTarefaEdicao != tarefa.idTarefa"> 
             {{ tarefa.descricaoTarefa }}
         </td>
@@ -28,6 +37,10 @@
 
         <td *ngIf="idTarefaEdicao == tarefa.idTarefa"> 
             <button (click)="editarTarefa(tarefa.idTarefa)"> Confirmar </button>
+        </td>
+
+        <td> 
+            <p> {{tarefa.order}} </p>
         </td>
     </tr>
 </table>
