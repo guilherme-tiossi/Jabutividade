@@ -4,14 +4,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import ch.qos.logback.classic.Logger;
 import com.jabutividade.backEnd.entities.Tarefa;
 import com.jabutividade.backEnd.repository.TarefaRepository;
 
 @Service
 public class TarefaService {
+
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(TarefaService.class);
+
     @Autowired
     private TarefaRepository tarefaRepository;
 
@@ -36,7 +40,7 @@ public class TarefaService {
             tarefaExistente.setDescricaoTarefa(tarefa.getDescricaoTarefa());
             tarefaExistente.setCompleta(tarefa.getCompleta());
             tarefaExistente.setIdUsuario(tarefa.getIdUsuario());
-            
+            tarefaExistente.setOrder(tarefa.getOrder());
             return tarefaRepository.save(tarefaExistente);
         }
         return tarefaRepository.save(tarefa);

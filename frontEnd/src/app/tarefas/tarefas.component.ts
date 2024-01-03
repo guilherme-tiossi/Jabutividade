@@ -69,7 +69,7 @@ export class TarefasComponent implements OnInit {
             tarefa["tamanhoArray"] = response.data.length;
           })
           this.listaTarefasExibicao = response.data
-          console.log(this.listaTarefasExibicao)
+          this.listaTarefasExibicao.sort((a, b) => a.order - b.order)
         }).catch(
           (error) => {
             console.log("erro")
@@ -78,32 +78,42 @@ export class TarefasComponent implements OnInit {
   }
 
   aumentarOrderTarefa(order: number) {
-    // this.listaTarefasExibicao.find(tarefa => tarefa.order === order).order = Number(order - 1) 
-    // this.listaTarefasExibicao.find(tarefa => tarefa.order === order - 1).order = Number(order) 
-    // this.listaTarefasExibicao.sort((a,b) => a.order - b.order)
-
-    console.log(this.listaTarefasExibicao[0])
-    // this.carregarTarefas()
+    this.axiosService.request(
+      "PUT",
+      "/api/aumentarOrderTarefa/" + this.IDUSUARIO,
+      order
+    ).then(
+      (response) => {
+        this.carregarTarefas()
+      }).catch(
+        (error) => {
+          this.handleError(error, "o aumento de tarefa!")
+        }
+      )
   }
 
   abaixarOrderTarefa(order: number) {
-    console.log(this.listaTarefasExibicao);
+    this.axiosService.request(
+      "PUT",
+      "/api/abaixarOrderTarefa/" + this.IDUSUARIO,
+      order
+    ).then(
+      (response) => {
+        this.carregarTarefas()
+      }).catch(
+        (error) => {
+          this.handleError(error, "o rebaixamento de tarefa!")
+        }
+      )
   }
-
-
-// 0 oi
-// 1 ola
-// 2 tudo bem
-// 3 s e vc       ^ 
-// 4 kkk smt
-// 5 ;-; pq
 
   editarTarefa(idTarefa: string) {
     const tarefaData = {
       idTarefa: idTarefa,
       descricaoTarefa: this.descricaoTarefaEdicao,
       idUsuario: this.IDUSUARIO,
-      completa: this.listaTarefasExibicao.find(tarefa => tarefa.idTarefa === idTarefa).completa
+      completa: this.listaTarefasExibicao.find(tarefa => tarefa.idTarefa === idTarefa).completa,
+      order: this.listaTarefasExibicao.find(tarefa => tarefa.idTarefa === idTarefa).order
     }
 
     this.axiosService.request(

@@ -31,11 +31,18 @@ public class Tarefa {
         return Objects.equals(idTarefa, tarefa.idTarefa) &&
                 Objects.equals(descricaoTarefa, tarefa.descricaoTarefa) &&
                 Objects.equals(idUsuario, tarefa.idUsuario) &&
-                Objects.equals(completa, tarefa.completa);
+                Objects.equals(completa, tarefa.completa) &&
+                Objects.equals(order, tarefa.order);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(idTarefa, descricaoTarefa, idUsuario, completa);
     }
+
+    @Override
+    public String toString() {
+        return "Tarefa{id=" + idTarefa + ", descricao='" + descricaoTarefa + "', order=" + order + ", completa=" + completa + ", idUsuário= " + idUsuario + "}";
+    }
+
 }
