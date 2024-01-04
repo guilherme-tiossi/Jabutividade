@@ -1,7 +1,9 @@
 package com.jabutividade.backEnd.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.jabutividade.backEnd.services.TarefaService;
 import ch.qos.logback.classic.Logger;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.jabutividade.backEnd.entities.Tarefa;
 
 @RestController
@@ -39,10 +43,15 @@ public class TarefaApiController {
     }
 
     @PutMapping("/aumentarOrderTarefa/{idUsuario}")
-    public ResponseEntity<Void> aumentarOrderTarefa(@PathVariable String idUsuario, @RequestBody Integer order) {
-        
+    public ResponseEntity<Void> aumentarOrderTarefa(@PathVariable String idUsuario, @RequestBody Map<String, Object> requestBody)  {
+
         logger.debug("1");
-        List<Tarefa> tarefasUsuario = tarefaService.listarTarefasPorUsuario(idUsuario);
+        List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) requestBody.get("listaTarefas");
+        List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
+                .map(tarefaMap -> mapToTarefa(tarefaMap))
+                .collect(Collectors.toList());
+
+        Integer order = (Integer) requestBody.get("order");
         Integer orderMaiorPrioridade = order - 1;
 
         logger.debug("2");
@@ -71,10 +80,15 @@ public class TarefaApiController {
     }
 
     @PutMapping("/abaixarOrderTarefa/{idUsuario}")
-    public ResponseEntity<Void> abaixarOrderTarefa(@PathVariable String idUsuario, @RequestBody Integer order) {
-        
+    public ResponseEntity<Void> abaixarOrderTarefa(@PathVariable String idUsuario, @RequestBody Map<String, Object> requestBody)  {
+
         logger.debug("1");
-        List<Tarefa> tarefasUsuario = tarefaService.listarTarefasPorUsuario(idUsuario);
+        List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) requestBody.get("listaTarefas");
+        List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
+                .map(tarefaMap -> mapToTarefa(tarefaMap))
+                .collect(Collectors.toList());
+
+        Integer order = (Integer) requestBody.get("order");
         Integer orderMenorPrioridade = order + 1;
 
         logger.debug("2");
@@ -117,5 +131,16 @@ public class TarefaApiController {
     @GetMapping("/{idUsuario}")
     public List<Tarefa> listarTarefasPorUsuario(@PathVariable String idUsuario) {
         return tarefaService.listarTarefasPorUsuario(idUsuario);
+    }
+
+    private Tarefa mapToTarefa(Map<String, Object> tarefaMap) {
+        Tarefa tarefa = new Tarefa();
+        tarefa.setIdTarefa((String) tarefaMap.get("idTarefa"));
+        tarefa.setDescricaoTarefa((String) tarefaMap.get("descricaoTarefa"));
+        tarefa.setIdUsuario((String) tarefaMap.get("idUsuario"));
+        tarefa.setCompleta((Boolean) tarefaMap.get("completa"));
+        tarefa.setOrder((Integer) tarefaMap.get("order"));
+    
+        return tarefa;
     }
 }

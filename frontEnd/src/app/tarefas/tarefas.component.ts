@@ -81,7 +81,12 @@ export class TarefasComponent implements OnInit {
     this.axiosService.request(
       "PUT",
       "/api/aumentarOrderTarefa/" + this.IDUSUARIO,
-      order
+      {order: order,
+        listaTarefas: this.listaTarefasExibicao.map(tarefa => {
+          const novaTarefa = { ...tarefa };
+          delete novaTarefa.tamanhoArray;
+          return novaTarefa;
+        })}
     ).then(
       (response) => {
         this.carregarTarefas()
@@ -96,7 +101,12 @@ export class TarefasComponent implements OnInit {
     this.axiosService.request(
       "PUT",
       "/api/abaixarOrderTarefa/" + this.IDUSUARIO,
-      order
+      {order: order,
+        listaTarefas: this.listaTarefasExibicao.map(tarefa => {
+          const novaTarefa = { ...tarefa };
+          delete novaTarefa.tamanhoArray;
+          return novaTarefa;
+        })}
     ).then(
       (response) => {
         this.carregarTarefas()
