@@ -45,7 +45,6 @@ public class TarefaApiController {
     @PutMapping("/aumentarOrderTarefa/{idUsuario}")
     public ResponseEntity<Void> aumentarOrderTarefa(@PathVariable String idUsuario, @RequestBody Map<String, Object> requestBody)  {
 
-        logger.debug("1");
         List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) requestBody.get("listaTarefas");
         List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
                 .map(tarefaMap -> mapToTarefa(tarefaMap))
@@ -54,35 +53,28 @@ public class TarefaApiController {
         Integer order = (Integer) requestBody.get("order");
         Integer orderMaiorPrioridade = order - 1;
 
-        logger.debug("2");
         Optional<Tarefa> tarefaAAumentarOptional = tarefasUsuario.stream()
             .filter(tarefa -> order.equals(tarefa.getOrder()))
             .findFirst();
-        logger.debug("3");
         Optional<Tarefa> tarefaADiminuirOptional = tarefasUsuario.stream()
             .filter(tarefa -> orderMaiorPrioridade.equals(tarefa.getOrder()))
             .findFirst();
 
-        logger.debug("4");
         Tarefa tarefaAAumentar = tarefaAAumentarOptional.get();
         Tarefa tarefaADiminuir = tarefaADiminuirOptional.get();
         
-        logger.debug("5");
         tarefaAAumentar.setOrder(orderMaiorPrioridade);
         tarefaADiminuir.setOrder(order); // order de menor prioridade
         
-        logger.debug("6");
         tarefaService.editarTarefa(tarefaAAumentar);
         tarefaService.editarTarefa(tarefaADiminuir);
         
-        logger.debug("7"); 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/abaixarOrderTarefa/{idUsuario}")
     public ResponseEntity<Void> abaixarOrderTarefa(@PathVariable String idUsuario, @RequestBody Map<String, Object> requestBody)  {
 
-        logger.debug("1");
         List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) requestBody.get("listaTarefas");
         List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
                 .map(tarefaMap -> mapToTarefa(tarefaMap))
@@ -91,28 +83,22 @@ public class TarefaApiController {
         Integer order = (Integer) requestBody.get("order");
         Integer orderMenorPrioridade = order + 1;
 
-        logger.debug("2");
         Optional<Tarefa> tarefaAAumentarOptional = tarefasUsuario.stream()
             .filter(tarefa -> orderMenorPrioridade.equals(tarefa.getOrder()))
             .findFirst();
-        logger.debug("3");
         Optional<Tarefa> tarefaADiminuirOptional = tarefasUsuario.stream()
             .filter(tarefa -> order.equals(tarefa.getOrder()))
             .findFirst();
 
-        logger.debug("4");
         Tarefa tarefaAAumentar = tarefaAAumentarOptional.get();
         Tarefa tarefaADiminuir = tarefaADiminuirOptional.get();
         
-        logger.debug("5");
         tarefaAAumentar.setOrder(order);
         tarefaADiminuir.setOrder(orderMenorPrioridade); // order de maior prioridade
         
-        logger.debug("6");
         tarefaService.editarTarefa(tarefaAAumentar);
         tarefaService.editarTarefa(tarefaADiminuir);
         
-        logger.debug("7");
         return ResponseEntity.ok().build();
     }
 
