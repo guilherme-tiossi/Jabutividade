@@ -86,6 +86,7 @@ export class ContentComponent implements OnInit {
       "/register",
       {
         username: input.login,
+        email: input.email,
         password: input.password
       }
     ).then(response => {

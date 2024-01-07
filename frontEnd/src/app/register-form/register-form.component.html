@@ -1,8 +1,20 @@
-<form (ngSubmit)="onSubmitRegister()" #loginForm="ngForm">
-    <label for="loginName"> Usuário: </label>
-    <input type="text" id="loginName" name="login" [(ngModel)]="login" />
-    <label for="passwordName"> Senha: </label>
-    <input type="password" id="passwordName" name="password" [(ngModel)]="password" />
-    <a (click)="sharedService.showComponent('login')">Já tenho conta</a>
-    <button type="submit"> Realizar Cadastro </button>
-</form>
+<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <form (ngSubmit)="onSubmitRegister()" #loginForm="ngForm">
+        <div class="row">
+            <label for="loginName" class="col-md-3"> Usuário: </label>
+            <input type="text"  class="col-md-9" id="loginName" name="login" [(ngModel)]="login" />
+        </div>
+        <div class="row mt-2">
+            <label for="EmailName" class="col-md-3"> E-mail: </label>
+            <input type="email"  class="col-md-9" id="emailName" name="email" [(ngModel)]="email" />
+        </div>
+        <div class="row mt-2">
+            <label for="passwordName" class="col-md-3"> Senha: </label>
+            <input type="password"  class="col-md-9" id="passwordName" name="password" [(ngModel)]="password" />
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <button type="submit" class="col-md-4 m-2"> Cadastrar </button>
+            <p (click)="sharedService.showComponent('login')" style="color:blue;cursor: pointer;">Já tenho conta</p>
+        </div>
+    </form>
+</div>

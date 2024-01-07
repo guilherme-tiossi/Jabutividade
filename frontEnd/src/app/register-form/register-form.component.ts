@@ -12,9 +12,10 @@ export class RegisterFormComponent {
 
   login: string = "";
   password: string  = "";
+  email: string = "";
 
   onSubmitRegister(): void {
-    this.onSubmitRegisterEvent.emit({"login": this.login, "password": this.password});
+    this.onSubmitRegisterEvent.emit({"login": this.login, "email": this.email, "password": this.password});
   }
 
   showComponentEvent(componentToShow: string): void {

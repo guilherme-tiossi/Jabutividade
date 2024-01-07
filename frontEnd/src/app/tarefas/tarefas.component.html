@@ -1,46 +1,48 @@
+<div id="tarefas" class="container mx-auto text-center">
+    <div class="row">
+        <form #FormCriarTarefa="ngForm" (ngSubmit)="onSubmit()" class="col-12">
+            <div class="form-group">
+                <label for="txt_descricaoTarefaCriacao">Descrição da Tarefa:</label>
+                <input type="text" id="txt_descricaoTarefaCriacao" name="txt_descricaoTarefaCriacao" [(ngModel)]="descricaoTarefaCriacao" class="form-control" required>
+            </div>
+            <input type="hidden" name="idUsuario" [value]="IDUSUARIO" required>
+            <button type="submit" class="btn btn-primary">Cadastrar</button> 
+        </form>
+    </div>
 
-<form #FormCriarTarefa="ngForm" (ngSubmit)="onSubmit()">
-    <input type="text" name="txt_descricaoTarefaCriacao" [(ngModel)]="descricaoTarefaCriacao" required>
-    <input type="hidden" name="idUsuario" [value]="IDUSUARIO" required>
-    <button type="submit">Cadastrar</button> 
-</form>
+    <div class="row">
+        <table class="table table-bordered col-8 mx-auto">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Descrição</th>
+                    <th>Completa</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tarefa of listaTarefasExibicao" [ngClass]="{'table-success': tarefa.completa}">
+                    <td> 
+                        <button *ngIf="tarefa.order > 1" (click)="aumentarOrderTarefa(tarefa.order)"> ▲ </button>
+                        <button *ngIf="tarefa.order < tarefa.tamanhoArray" (click)="abaixarOrderTarefa(tarefa.order)"> ▼ </button>
+                    </td>
 
-<table style="border-collapse: collapse;">
-    <tr *ngFor="let tarefa of listaTarefasExibicao" class="{{tarefa.completa ? 'tarefaCompletaClasse' : ''}}">
-
-        <td *ngIf="tarefa.order > 1"> 
-            <button (click)="aumentarOrderTarefa(tarefa.order)"> ▲ </button>
-        </td>
-
-        <td *ngIf="tarefa.order < tarefa.tamanhoArray"> 
-            <button (click)="abaixarOrderTarefa(tarefa.order)"> ▼ </button>
-        </td>
-
-        <td *ngIf="idTarefaEdicao != tarefa.idTarefa"> 
-            {{ tarefa.descricaoTarefa }}
-        </td>
-        <td *ngIf="idTarefaEdicao == tarefa.idTarefa">  
-            <input type="text" name="inputEdicaoTarefa" [(ngModel)]="descricaoTarefaEdicao"  /> 
-        </td>
-
-        <td> 
-            <input type="checkbox" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> 
-        </td>
-
-        <td> 
-            <button (click)="deletarTarefa(tarefa.idTarefa)"> X </button>
-        </td>
-
-        <td> 
-            <button (click)="editarTarefaForm(tarefa.idTarefa)"> {{ idTarefaEdicao == tarefa.idTarefa ? "cancel" : "edit" }} </button>
-        </td>
-
-        <td *ngIf="idTarefaEdicao == tarefa.idTarefa"> 
-            <button (click)="editarTarefa(tarefa.idTarefa)"> Confirmar </button>
-        </td>
-
-        <td> 
-            <p> {{tarefa.order}} </p>
-        </td>
-    </tr>
-</table>
+                    <td *ngIf="idTarefaEdicao != tarefa.idTarefa"> 
+                        {{ tarefa.descricaoTarefa }}
+                    </td>
+                    <td *ngIf="idTarefaEdicao == tarefa.idTarefa">  
+                        <input type="text" id="inputEdicaoTarefa" name="inputEdicaoTarefa" [(ngModel)]="descricaoTarefaEdicao" class="form-control" /> 
+                    </td>
+                    <td> 
+                        <input type="checkbox" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> 
+                    </td>
+                    <td> 
+                        <button class="btn btn-danger" (click)="deletarTarefa(tarefa.idTarefa)">Deletar</button>
+                        <button class="btn btn-primary" (click)="editarTarefaForm(tarefa.idTarefa)">{{ idTarefaEdicao == tarefa.idTarefa ? "Cancelar" : "Editar" }}</button>
+                        <button *ngIf="idTarefaEdicao == tarefa.idTarefa" class="btn btn-success" (click)="editarTarefa(tarefa.idTarefa)">Confirmar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

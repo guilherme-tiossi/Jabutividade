@@ -1,8 +1,16 @@
-<form (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
-    <label for="loginName"> Usuário: </label>
-    <input type="text" id="loginName" name="login" [(ngModel)]="login" />
-    <label for="passwordName"> Senha: </label>
-    <input type="password" id="passwordName" name="password" [(ngModel)]="password" />
-    <a (click)="sharedService.showComponent('cadastro')">Não tenho conta</a>
-    <button type="submit"> Realizar Login </button>
-</form>
+<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <form (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
+        <div class="row">
+            <label for="loginName" class="col-md-3"> Usuário: </label>
+            <input type="text"  class="col-md-9" id="loginName" name="login" [(ngModel)]="login" />
+        </div>
+        <div class="row mt-2">
+            <label for="passwordName" class="col-md-3"> Senha: </label>
+            <input type="password"  class="col-md-9" id="passwordName" name="password" [(ngModel)]="password" />
+        </div>  
+        <div class="row align-items-center justify-content-center">
+            <button type="submit" class="col-md-4 m-2"> Entrar </button>
+            <p (click)="sharedService.showComponent('cadastro')" style="color:blue;cursor: pointer;">Não tenho conta</p>
+        </div>
+    </form>
+</div>
