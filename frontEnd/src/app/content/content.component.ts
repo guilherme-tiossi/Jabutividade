@@ -17,7 +17,7 @@ export class ContentComponent implements OnInit {
     this.sharedService.componentToShow$.subscribe(componentToShow => {
       this.componentToShow = componentToShow;
     });
-    
+
     const authToken = this.axiosService.getAuthToken();
 
     if (authToken != null) {
@@ -29,20 +29,14 @@ export class ContentComponent implements OnInit {
             this.axiosService.setIdUser(idUser);
             this.componentToShow = 'home';
           } else {
-            this.axiosService.setAuthToken(null);
-            this.axiosService.setIdUser(null);
-            this.componentToShow = 'login';
+            this.deslogar();
           }
         })
         .catch(error => {
-          this.axiosService.setAuthToken(null);
-          this.axiosService.setIdUser(null);
-          this.componentToShow = 'login';
+          this.deslogar();
         });
     } else {
-      this.axiosService.setAuthToken(null);
-      this.axiosService.setIdUser(null);
-      this.componentToShow = 'login';
+      this.deslogar();
     }
   }
 
@@ -116,6 +110,12 @@ export class ContentComponent implements OnInit {
     } else {
       this.mensagensErro.push("Ocorreu um erro durante o " + caso);
     }
+  }
+
+  deslogar(): void {
+    this.axiosService.setAuthToken(null);
+    this.axiosService.setIdUser(null);
+    this.componentToShow = 'login';
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { AxiosService } from '../axios.service'
+import { ContentComponent } from '../content/content.component'
 
 @Component({
   selector: 'app-tarefas',
@@ -17,7 +18,7 @@ export class TarefasComponent implements OnInit {
 
   @ViewChild('FormCriarTarefa', { static: false }) FormCriarTarefa!: NgForm
 
-  constructor(private axiosService: AxiosService) { }
+  constructor(private axiosService: AxiosService, private contentComponent: ContentComponent) { }
 
   ngOnInit() {
     this.carregarTarefas()
@@ -30,7 +31,21 @@ export class TarefasComponent implements OnInit {
       completa: false
     }
 
-    this.salvarTarefa(tarefaData)
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (validToken) {
+          this.salvarTarefa(tarefaData);
+        } else {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
   }
 
   editarTarefaForm(idTarefa: string) {
@@ -60,6 +75,21 @@ export class TarefasComponent implements OnInit {
   }
 
   carregarTarefas() {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+      
     this.axiosService.request(
       "GET",
       "/api/" + this.IDUSUARIO,
@@ -78,15 +108,32 @@ export class TarefasComponent implements OnInit {
   }
 
   aumentarOrderTarefa(order: number) {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+
     this.axiosService.request(
       "PUT",
       "/api/aumentarOrderTarefa/" + this.IDUSUARIO,
-      {order: order,
+      {
+        order: order,
         listaTarefas: this.listaTarefasExibicao.map(tarefa => {
           const novaTarefa = { ...tarefa };
           delete novaTarefa.tamanhoArray;
           return novaTarefa;
-        })}
+        })
+      }
     ).then(
       (response) => {
         this.carregarTarefas()
@@ -98,15 +145,32 @@ export class TarefasComponent implements OnInit {
   }
 
   abaixarOrderTarefa(order: number) {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+
     this.axiosService.request(
       "PUT",
       "/api/abaixarOrderTarefa/" + this.IDUSUARIO,
-      {order: order,
+      {
+        order: order,
         listaTarefas: this.listaTarefasExibicao.map(tarefa => {
           const novaTarefa = { ...tarefa };
           delete novaTarefa.tamanhoArray;
           return novaTarefa;
-        })}
+        })
+      }
     ).then(
       (response) => {
         this.carregarTarefas()
@@ -118,6 +182,21 @@ export class TarefasComponent implements OnInit {
   }
 
   editarTarefa(idTarefa: string) {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+
     const tarefaData = {
       idTarefa: idTarefa,
       descricaoTarefa: this.descricaoTarefaEdicao,
@@ -142,6 +221,21 @@ export class TarefasComponent implements OnInit {
   }
 
   completarTarefa(idTarefa: string, completo: boolean) {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+
     this.axiosService.request(
       "PUT",
       "/api/completarTarefa/" + idTarefa,
@@ -157,6 +251,21 @@ export class TarefasComponent implements OnInit {
   }
 
   deletarTarefa(idTarefa: string) {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
+    this.contentComponent.validarToken(authToken)
+      .then((validToken) => {
+        if (!validToken) {
+          this.contentComponent.deslogar();
+        }
+      })
+      .catch(error => {
+        this.contentComponent.deslogar();
+      });
+
     this.axiosService.request(
       "DELETE",
       "/api/" + idTarefa,
