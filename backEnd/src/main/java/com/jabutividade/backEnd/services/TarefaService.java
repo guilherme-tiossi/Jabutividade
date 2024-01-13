@@ -2,6 +2,8 @@ package com.jabutividade.backEnd.services;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.LoggerFactory;
@@ -19,8 +21,19 @@ public class TarefaService {
     @Autowired
     private TarefaRepository tarefaRepository;
 
-    public Tarefa criarTarefa(Tarefa tarefa) {
-        return tarefaRepository.save(tarefa);
+    public Map<String, Object> criarTarefa(Tarefa tarefa) {
+            Map<String, Object> response = new HashMap<>();
+            Tarefa tarefaSalva = tarefaRepository.save(tarefa);
+        if (tarefaSalva.getIdTarefa().length() > 0) {
+            response.put("success", true);
+            response.put("tarefa", tarefaSalva);
+            return response;
+        } else {
+            response.put("success", false);
+            response.put("tarefa", null);
+            response.put("message", "Erro na criação de tarefa, tente novamente.");
+            return response;
+        }
     }
 
     public Integer getOrderTarefa(String idUsuario) {

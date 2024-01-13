@@ -34,7 +34,7 @@ public class TarefaServiceTest {
 
         when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
 
-        Tarefa resultadoCriacao = tarefaService.criarTarefa(tarefa);
+        Tarefa resultadoCriacao = (Tarefa) tarefaService.criarTarefa(tarefa).get("tarefa");
 
         assertEquals(tarefa, resultadoCriacao);
 
@@ -51,7 +51,7 @@ public class TarefaServiceTest {
 
         Mockito.when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
 
-        Tarefa resultadoCriacao = tarefaService.criarTarefa(tarefa);
+        Tarefa resultadoCriacao = (Tarefa) tarefaService.criarTarefa(tarefa).get("tarefa");
 
         assert resultadoCriacao != null;
         assert resultadoCriacao.getIdTarefa().equals("1");
@@ -70,8 +70,8 @@ public class TarefaServiceTest {
         Mockito.when(tarefaRepository.findByIdUsuarioOrderByCompleta("usuario1"))
                 .thenReturn(Arrays.asList(tarefa, tarefa2));
 
-        Tarefa resultadoCriacao = tarefaService.criarTarefa(tarefa);
-        Tarefa resultadoCriacao2 = tarefaService.criarTarefa(tarefa2);
+        Tarefa resultadoCriacao = (Tarefa) tarefaService.criarTarefa(tarefa).get("tarefa");
+        Tarefa resultadoCriacao2 = (Tarefa) tarefaService.criarTarefa(tarefa2).get("tarefa");
 
         assert resultadoCriacao != null;
         assert resultadoCriacao.getIdTarefa().equals("1");

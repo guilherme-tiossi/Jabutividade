@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.LoggerFactory;
+// import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,22 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.jabutividade.backEnd.services.TarefaService;
-import ch.qos.logback.classic.Logger;
+// import ch.qos.logback.classic.Logger;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.core.type.TypeReference;
 import com.jabutividade.backEnd.entities.Tarefa;
 
 @RestController
 @RequestMapping("/api")
 public class TarefaApiController {
 
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(TarefaApiController.class);
+    // private static final Logger logger = (Logger) LoggerFactory.getLogger(TarefaApiController.class);
 
     @Autowired
     private TarefaService tarefaService;
 
     @PostMapping
-    public Tarefa criarTarefa(@RequestBody Tarefa tarefa) {
+    public Map<String, Object> criarTarefa(@RequestBody Tarefa tarefa) {
         tarefa.setOrder(tarefaService.getOrderTarefa(tarefa.getIdUsuario()) + 1);
         return tarefaService.criarTarefa(tarefa);
     }

@@ -65,11 +65,15 @@ export class TarefasComponent implements OnInit {
       tarefa
     ).then(
       (response) => {
-        this.carregarTarefas()
-        this.limparFormulario()
+        if (response.data.success === true) {
+          this.carregarTarefas()
+          this.limparFormulario()
+        } else {
+          this.handleError(response.data.message, "a criação de tarefa.")
+        }
       }).catch(
         (error) => {
-          console.log("erro")
+          this.handleError(error, "a criação de tarefa.")
         }
       )
   }
@@ -95,11 +99,15 @@ export class TarefasComponent implements OnInit {
       "/api/" + this.IDUSUARIO,
       {}).then(
         (response) => {
-          response.data.forEach(function (tarefa: any) {
-            tarefa["tamanhoArray"] = response.data.length;
-          })
           this.listaTarefasExibicao = response.data
           this.listaTarefasExibicao.sort((a, b) => a.order - b.order)
+          let i = 0
+          this.listaTarefasExibicao.forEach( (tarefa: any) => {
+            i++
+            tarefa["order"] = i
+            tarefa["primeiroArray"] = this.listaTarefasExibicao[0].order
+            tarefa["tamanhoArray"] = this.listaTarefasExibicao.length;
+          })
         }).catch(
           (error) => {
             console.log("erro")
@@ -286,5 +294,5 @@ export class TarefasComponent implements OnInit {
     } else {
       this.mensagensErro.push("Ocorreu um erro durante " + caso)
     }
-  }
+  } 
 }
