@@ -93,24 +93,28 @@ export class TarefasComponent implements OnInit {
       .catch(error => {
         this.contentComponent.deslogar();
       });
-      
+
     this.axiosService.request(
       "GET",
       "/api/" + this.IDUSUARIO,
       {}).then(
         (response) => {
-          this.listaTarefasExibicao = response.data
-          this.listaTarefasExibicao.sort((a, b) => a.order - b.order)
-          let i = 0
-          this.listaTarefasExibicao.forEach( (tarefa: any) => {
-            i++
-            tarefa["order"] = i
-            tarefa["primeiroArray"] = this.listaTarefasExibicao[0].order
-            tarefa["tamanhoArray"] = this.listaTarefasExibicao.length;
-          })
+          if (response.data.success === true) {
+            this.listaTarefasExibicao = response.data.tarefas
+            this.listaTarefasExibicao.sort((a, b) => a.order - b.order)
+            let i = 0
+            this.listaTarefasExibicao.forEach((tarefa: any) => {
+              i++
+              tarefa["order"] = i
+              tarefa["primeiroArray"] = this.listaTarefasExibicao[0].order
+              tarefa["tamanhoArray"] = this.listaTarefasExibicao.length;
+            })
+          } else {
+            this.handleError(response.data.message, "o carregamento de tarefas.")
+          }
         }).catch(
           (error) => {
-            console.log("erro")
+            this.handleError(error, "o carregamento de tarefas.")
           }
         )
   }
@@ -144,10 +148,14 @@ export class TarefasComponent implements OnInit {
       }
     ).then(
       (response) => {
-        this.carregarTarefas()
+        if (response.data.success === true) {
+          this.carregarTarefas()
+        } else {
+          this.handleError(response.data.message, "o aumento de tarefa.")
+        }
       }).catch(
         (error) => {
-          this.handleError(error, "o aumento de tarefa!")
+          this.handleError(error, "o aumento de tarefa.")
         }
       )
   }
@@ -181,10 +189,14 @@ export class TarefasComponent implements OnInit {
       }
     ).then(
       (response) => {
-        this.carregarTarefas()
+        if (response.data.success === true) {
+          this.carregarTarefas()
+        } else {
+          this.handleError(response.data.message, "o rebaixamento de tarefa.")
+        }
       }).catch(
         (error) => {
-          this.handleError(error, "o rebaixamento de tarefa!")
+          this.handleError(error, "o rebaixamento de tarefa.")
         }
       )
   }
@@ -219,11 +231,15 @@ export class TarefasComponent implements OnInit {
       tarefaData
     ).then(
       (response) => {
-        this.idTarefaEdicao = ''
-        this.carregarTarefas()
+        if (response.data.success === true) {
+          this.idTarefaEdicao = ''
+          this.carregarTarefas()
+        } else {
+          this.handleError(response.data.message, "edição de tarefa.")
+        }
       }).catch(
         (error) => {
-          this.handleError(error, "criação de tarefa!")
+          this.handleError(error, "edição de tarefa.")
         }
       )
   }
@@ -250,10 +266,14 @@ export class TarefasComponent implements OnInit {
       !completo
     ).then(
       (response) => {
-        this.carregarTarefas()
+        if (response.data.success === true) {
+          this.carregarTarefas()
+        } else {
+          this.handleError(response.data.message, "a finalização de tarefa.")
+        }
       }).catch(
         (error) => {
-          this.handleError(error, "a finalização de tarefa!")
+          this.handleError(error, "a finalização de tarefa.")
         }
       )
   }
@@ -279,10 +299,14 @@ export class TarefasComponent implements OnInit {
       "/api/" + idTarefa,
       {}).then(
         (response) => {
-          this.carregarTarefas()
+          if (response.data.success === true) {
+            this.carregarTarefas()
+          } else {
+            this.handleError(response.data.message, "a deleção de tarefa.")
+          }
         }).catch(
           (error) => {
-            this.handleError(error, "a deleção de tarefa!")
+            this.handleError(error, "a deleção de tarefa.")
           }
         )
   }
@@ -294,5 +318,5 @@ export class TarefasComponent implements OnInit {
     } else {
       this.mensagensErro.push("Ocorreu um erro durante " + caso)
     }
-  } 
+  }
 }

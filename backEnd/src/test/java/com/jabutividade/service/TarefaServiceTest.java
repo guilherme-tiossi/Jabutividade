@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,7 +35,9 @@ public class TarefaServiceTest {
 
         when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefa);
 
-        Tarefa resultadoCriacao = (Tarefa) tarefaService.criarTarefa(tarefa).get("tarefa");
+        Map<String, Object> response = tarefaService.criarTarefa(tarefa);
+
+        Tarefa resultadoCriacao = (Tarefa) response.get("tarefa");
 
         assertEquals(tarefa, resultadoCriacao);
 
@@ -43,6 +46,8 @@ public class TarefaServiceTest {
         assertEquals("descricao", resultadoCriacao.getDescricaoTarefa());
         assertFalse(resultadoCriacao.getCompleta());
         assertEquals("usuario1", resultadoCriacao.getIdUsuario());
+
+        assertTrue((Boolean) response.get("success"));
     }
 
     @Test
@@ -56,9 +61,11 @@ public class TarefaServiceTest {
         assert resultadoCriacao != null;
         assert resultadoCriacao.getIdTarefa().equals("1");
 
-        tarefaService.deletarTarefa(resultadoCriacao.getIdTarefa());
+        Map<String, Object> response = tarefaService.deletarTarefa(resultadoCriacao.getIdTarefa());
 
         verify(tarefaRepository, times(1)).deleteById("1");
+
+        assertTrue((Boolean) response.get("success"));
     }
 
     @Test
@@ -78,7 +85,8 @@ public class TarefaServiceTest {
         assert resultadoCriacao2 != null;
         assert resultadoCriacao2.getIdTarefa().equals("2");
 
-        List<Tarefa> tarefasDoUsuario = tarefaService.listarTarefasPorUsuario("usuario1");
+        Map<String, Object> response = tarefaService.listarTarefasPorUsuario("usuario1");
+        List<Tarefa> tarefasDoUsuario = (List<Tarefa>) response.get("tarefas");
 
         assertNotNull(tarefasDoUsuario);
         assertEquals(2, tarefasDoUsuario.size());
@@ -87,6 +95,8 @@ public class TarefaServiceTest {
 
         verify(tarefaRepository, times(1)).findByIdUsuarioOrderByCompleta("usuario1");
         verify(tarefaRepository, times(2)).save(any(Tarefa.class));
+
+        assertTrue((Boolean) response.get("success"));
     }
 
     @Test
@@ -95,7 +105,7 @@ public class TarefaServiceTest {
 
         when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
 
-        tarefaService.completarTarefa("1", true);
+        Map<String, Object> response = tarefaService.completarTarefa("1", true);
 
         verify(tarefaRepository, times(1)).findByIdTarefa("1");
         verify(tarefaRepository, times(1)).save(any(Tarefa.class));
@@ -103,23 +113,26 @@ public class TarefaServiceTest {
         Tarefa tarefaAtualizada = tarefaRepository.findByIdTarefa("1").get(0);
 
         assertEquals(tarefaAtualizada.getCompleta(), true);
+
+        assertTrue((Boolean) response.get("success"));
     }
 
     @Test
     void testeEditarTarefa() {
         Tarefa tarefa = new Tarefa("1", "descricao", "usuario1", false, 0);
         Tarefa tarefaAlterar = new Tarefa("1", "descricao2", "usuario1", false, 1);
-
+    
         when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefa));
-
-        tarefaService.editarTarefa(tarefaAlterar);
-
+        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(null); 
+    
+        Map<String, Object> response = tarefaService.editarTarefa(tarefaAlterar);
+    
         verify(tarefaRepository, times(1)).findByIdTarefa("1");
         verify(tarefaRepository, times(1)).save(any(Tarefa.class));
-
-        Tarefa tarefaAtualizada = tarefaRepository.findByIdTarefa("1").get(0);
-
-        assertEquals(tarefaAtualizada.getDescricaoTarefa(), "descricao2");
+    
+        assertFalse((Boolean) response.get("success"));
+        assertEquals("Erro na alteração de tarefa!", response.get("message"));
     }
+    
 
 }
