@@ -1,0 +1,22 @@
+.titulo-form{
+    font-family: ubuntu;
+    font-weight: bold;
+}
+
+.input-form{
+    font-family: ubuntu;
+    background-color: #b5c89d;
+    border-color: rgb(33, 37, 41);
+}
+
+.form-link {
+    font-family: ubuntu;
+    color: #4a523d;
+    background-color: rgb(153, 175, 128);
+}
+
+.form-link:hover{
+    background-color: #8fa177;
+    color: rgb(33, 37, 41);
+    cursor: pointer; 
+}
