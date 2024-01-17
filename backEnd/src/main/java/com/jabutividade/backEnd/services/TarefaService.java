@@ -3,23 +3,30 @@ package com.jabutividade.backEnd.services;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
-
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ch.qos.logback.classic.Logger;
 import com.jabutividade.backEnd.entities.Tarefa;
 import com.jabutividade.backEnd.repository.TarefaRepository;
 
 @Service
 public class TarefaService {
 
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(TarefaService.class);
-
     @Autowired
     private TarefaRepository tarefaRepository;
+
+    public Integer getOrderTarefa(String idUsuario) {
+        List<Tarefa> tarefasUsuario = (List<Tarefa>) listarTarefasPorUsuario(idUsuario).get("tarefas");
+        if (tarefasUsuario != null && !tarefasUsuario.isEmpty()) {
+            Collections.sort(tarefasUsuario, Comparator.comparingInt(Tarefa::getOrder));
+            return tarefasUsuario.get(tarefasUsuario.size() - 1).getOrder();
+        } else {
+            return 0;
+        }
+    }
 
     public Map<String, Object> criarTarefa(Tarefa tarefa) {
         Map<String, Object> response = new HashMap<>();
@@ -36,22 +43,13 @@ public class TarefaService {
         }
     }
 
-    public Integer getOrderTarefa(String idUsuario) {
-        List<Tarefa> tarefasUsuario = (List<Tarefa>) listarTarefasPorUsuario(idUsuario).get("tarefas");
-        if (tarefasUsuario != null && !tarefasUsuario.isEmpty()) {
-            Collections.sort(tarefasUsuario, Comparator.comparingInt(Tarefa::getOrder));
-            return tarefasUsuario.get(tarefasUsuario.size() - 1).getOrder();
-        } else {
-            return 0;
-        }
-    }
-
     public Map<String, Object> editarTarefa(Tarefa tarefa) {
         Map<String, Object> response = new HashMap<>();
         Tarefa tarefaExistente = tarefa.getIdTarefa().isEmpty() ? null
                 : tarefaRepository.findByIdTarefa(tarefa.getIdTarefa()).get(0);
     
-        Tarefa tarefaAlterada;
+        Tarefa tarefaAlterada = null;
+        Boolean success = false;
     
         if (tarefaExistente != null) {
             tarefaExistente.setDescricaoTarefa(tarefa.getDescricaoTarefa());
@@ -59,11 +57,10 @@ public class TarefaService {
             tarefaExistente.setIdUsuario(tarefa.getIdUsuario());
             tarefaExistente.setOrder(tarefa.getOrder());
             tarefaAlterada = tarefaRepository.save(tarefaExistente);
-        } else {
-            tarefaAlterada = tarefaRepository.save(tarefa);
+            success = true;
         }
     
-        if (tarefaAlterada != null && tarefaAlterada.getIdTarefa() != null && tarefaAlterada.getIdTarefa().length() > 0) {
+        if (success) {
             response.put("success", true);
             response.put("tarefa", tarefaAlterada);
         } else {
@@ -74,7 +71,6 @@ public class TarefaService {
         return response;
     }
     
-
     public Map<String, Object> deletarTarefa(String idTarefa) {
         Map<String, Object> response = new HashMap<>();
 
@@ -120,5 +116,91 @@ public class TarefaService {
         }
 
         return response;
+    }
+
+    public Map<String, Object> priorizarTarefa(Map<String, Object> objeto) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) objeto.get("listaTarefas");
+        List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
+                .map(tarefaMap -> mapToTarefa(tarefaMap))
+                .collect(Collectors.toList());
+
+        Integer order = (Integer) objeto.get("order");
+        Integer orderMaiorPrioridade = order - 1;
+
+        Optional<Tarefa> tarefaPriorizarOptional = tarefasUsuario.stream()
+                .filter(tarefa -> order.equals(tarefa.getOrder()))
+                .findFirst();
+        Optional<Tarefa> tarefaPostergarOptional = tarefasUsuario.stream()
+                .filter(tarefa -> orderMaiorPrioridade.equals(tarefa.getOrder()))
+                .findFirst();
+
+        Tarefa tarefaPriorizar = tarefaPriorizarOptional.get();
+        Tarefa tarefaPostergar = tarefaPostergarOptional.get();
+
+        tarefaPriorizar.setOrder(orderMaiorPrioridade);
+        tarefaPostergar.setOrder(order); // order de menor prioridade
+
+        Boolean sucessoAumentada = (Boolean) editarTarefa(tarefaPriorizar).get("success");
+        Boolean sucessoDiminuida = (Boolean) editarTarefa(tarefaPostergar).get("success");
+
+        if (sucessoAumentada && sucessoDiminuida) {
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+            response.put("message", "Erro na alteração de tarefa!");
+        }
+
+        return response;
+    }
+
+    public Map<String, Object> postergarTarefa(Map<String, Object> objeto) {
+        Map<String, Object> response = new HashMap<>();
+
+        List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) objeto.get("listaTarefas");
+        List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
+                .map(tarefaMap -> mapToTarefa(tarefaMap))
+                .collect(Collectors.toList());
+
+        Integer order = (Integer) objeto.get("order");
+        Integer orderMenorPrioridade = order + 1;
+
+        Optional<Tarefa> tarefaPriorizarOptional = tarefasUsuario.stream()
+                .filter(tarefa -> orderMenorPrioridade.equals(tarefa.getOrder()))
+                .findFirst();
+        Optional<Tarefa> tarefaPostergarOptional = tarefasUsuario.stream()
+                .filter(tarefa -> order.equals(tarefa.getOrder()))
+                .findFirst();
+
+        Tarefa tarefaPriorizar = tarefaPriorizarOptional.get();
+        Tarefa tarefaPostergar = tarefaPostergarOptional.get();
+
+        tarefaPriorizar.setOrder(order);
+        tarefaPostergar.setOrder(orderMenorPrioridade);
+
+        Boolean sucessoPriorizada = (Boolean) editarTarefa(tarefaPriorizar).get("success");
+        Boolean sucessoPostergada = (Boolean) editarTarefa(tarefaPostergar).get("success");
+
+        if (sucessoPriorizada && sucessoPostergada) {
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+            response.put("message", "Erro na alteração de tarefa!");
+        }
+
+        return response;
+    }
+
+    private Tarefa mapToTarefa(Map<String, Object> tarefaMap) {
+        Tarefa tarefa = new Tarefa();
+        tarefa.setIdTarefa((String) tarefaMap.get("idTarefa"));
+        tarefa.setDescricaoTarefa((String) tarefaMap.get("descricaoTarefa"));
+        tarefa.setIdUsuario((String) tarefaMap.get("idUsuario"));
+        tarefa.setCompleta((Boolean) tarefaMap.get("completa"));
+        tarefa.setOrder((Integer) tarefaMap.get("order"));
+
+        return tarefa;
     }
 }

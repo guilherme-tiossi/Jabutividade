@@ -27,8 +27,8 @@
             <tbody>
                 <tr *ngFor="let tarefa of listaTarefasExibicao" [ngClass]="{'table-success': tarefa.completa}">
                     <td> 
-                        <button *ngIf="tarefa.order > tarefa.primeiroArray" (click)="aumentarOrderTarefa(tarefa.order)"> ▲ </button>
-                        <button *ngIf="tarefa.order < tarefa.tamanhoArray" (click)="abaixarOrderTarefa(tarefa.order)"> ▼ </button>
+                        <button *ngIf="tarefa.order > tarefa.primeiroArray" (click)="priorizarOrderTarefa(tarefa.order)"> ▲ </button>
+                        <button *ngIf="tarefa.order < tarefa.tamanhoArray" (click)="postergarOrderTarefa(tarefa.order)"> ▼ </button>
                     </td>
 
                     <td *ngIf="idTarefaEdicao != tarefa.idTarefa"> 
@@ -44,15 +44,6 @@
                         <button class="btn btn-danger" (click)="deletarTarefa(tarefa.idTarefa)">Deletar</button>
                         <button class="btn btn-primary" (click)="editarTarefaForm(tarefa.idTarefa)">{{ idTarefaEdicao == tarefa.idTarefa ? "Cancelar" : "Editar" }}</button>
                         <button *ngIf="idTarefaEdicao == tarefa.idTarefa" class="btn btn-success" (click)="editarTarefa(tarefa.idTarefa)">Confirmar</button>
-                    </td>
-                    <td>
-                        {{tarefa.order}}
-                    </td>
-                    <td>
-                        {{tarefa.primeiroArray}}
-                    </td>
-                    <td>
-                        {{tarefa.tamanhoArray}}
                     </td>
                 </tr>
             </tbody>

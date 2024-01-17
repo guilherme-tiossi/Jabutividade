@@ -119,7 +119,7 @@ export class TarefasComponent implements OnInit {
         )
   }
 
-  aumentarOrderTarefa(order: number) {
+  priorizarOrderTarefa(order: number) {
 
     const authToken = this.axiosService.getAuthToken();
 
@@ -137,7 +137,7 @@ export class TarefasComponent implements OnInit {
 
     this.axiosService.request(
       "PUT",
-      "/api/aumentarOrderTarefa/" + this.IDUSUARIO,
+      "/api/priorizarOrderTarefa",
       {
         order: order,
         listaTarefas: this.listaTarefasExibicao.map(tarefa => {
@@ -160,7 +160,7 @@ export class TarefasComponent implements OnInit {
       )
   }
 
-  abaixarOrderTarefa(order: number) {
+  postergarOrderTarefa(order: number) {
 
     const authToken = this.axiosService.getAuthToken();
 
@@ -178,7 +178,7 @@ export class TarefasComponent implements OnInit {
 
     this.axiosService.request(
       "PUT",
-      "/api/abaixarOrderTarefa/" + this.IDUSUARIO,
+      "/api/postergarOrderTarefa",
       {
         order: order,
         listaTarefas: this.listaTarefasExibicao.map(tarefa => {
