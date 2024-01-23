@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jabutividade.backEnd.entities.Tarefa;
 import com.jabutividade.backEnd.repository.TarefaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class TarefaService {
-
+    private static final Logger log = LoggerFactory.getLogger(TarefaService.class);
+    
     @Autowired
     private TarefaRepository tarefaRepository;
 
@@ -44,6 +47,7 @@ public class TarefaService {
     }
 
     public Map<String, Object> editarTarefa(Tarefa tarefa) {
+        log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tarefa: {}", tarefa);
         Map<String, Object> response = new HashMap<>();
         Tarefa tarefaExistente = tarefa.getIdTarefa().isEmpty() ? null
                 : tarefaRepository.findByIdTarefa(tarefa.getIdTarefa()).get(0);
@@ -122,10 +126,17 @@ public class TarefaService {
 
         Map<String, Object> response = new HashMap<>();
 
+        log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------objeto: {}", objeto);
         List<Map<String, Object>> listaTarefasMap = (List<Map<String, Object>>) objeto.get("listaTarefas");
+        
+        log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------listaTarefasMap: {}", listaTarefasMap);
+
         List<Tarefa> tarefasUsuario = listaTarefasMap.stream()
                 .map(tarefaMap -> mapToTarefa(tarefaMap))
                 .collect(Collectors.toList());
+                
+        log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tarefasUsuario: {}", tarefasUsuario);
+
 
         Integer order = (Integer) objeto.get("order");
         Integer orderMaiorPrioridade = order - 1;
@@ -136,12 +147,14 @@ public class TarefaService {
         Optional<Tarefa> tarefaPostergarOptional = tarefasUsuario.stream()
                 .filter(tarefa -> orderMaiorPrioridade.equals(tarefa.getOrder()))
                 .findFirst();
+                log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tarefa a priorizar optional: {}", tarefaPriorizarOptional);
 
         Tarefa tarefaPriorizar = tarefaPriorizarOptional.get();
         Tarefa tarefaPostergar = tarefaPostergarOptional.get();
 
         tarefaPriorizar.setOrder(orderMaiorPrioridade);
         tarefaPostergar.setOrder(order); // order de menor prioridade
+        log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------tarefa a priorizar: {}", tarefaPriorizar);
 
         Boolean sucessoAumentada = (Boolean) editarTarefa(tarefaPriorizar).get("success");
         Boolean sucessoDiminuida = (Boolean) editarTarefa(tarefaPostergar).get("success");
@@ -202,5 +215,5 @@ public class TarefaService {
         tarefa.setOrder((Integer) tarefaMap.get("order"));
 
         return tarefa;
-    }
+    }    
 }

@@ -144,39 +144,39 @@ public class TarefaServiceTest {
         assertTrue((Boolean) response.get("success"));
     }
 
-    // @Test
-    // void testePriorizarTarefa() {
-    //     Map<String, Object> tarefasObjeto = new HashMap<>();
-    //     tarefasObjeto.put("order", 3);
+    @Test
+    void testePriorizarTarefa() {
+        Map<String, Object> tarefasObjeto = new HashMap<>();
+        tarefasObjeto.put("order", 3);
+ 
+        List<Map<String, Object>> listaTarefas = new ArrayList<>();
+ 
+        Map<String, Object> tarefa1 = new HashMap<>();
+        tarefa1.put("idTarefa", "2");
+        tarefa1.put("descricaoTarefa", "tarefa2");
+        tarefa1.put("idUsuario", "1");
+        tarefa1.put("completa", true);
+        tarefa1.put("order", 2);
+ 
+        Map<String, Object> tarefa2 = new HashMap<>();
+        tarefa2.put("idTarefa", "3");
+        tarefa2.put("descricaoTarefa", "tarefa3");
+        tarefa2.put("idUsuario", "1");
+        tarefa2.put("completa", true);
+        tarefa2.put("order", 3);
 
-    //     List<Map<String, Object>> listaTarefas = new ArrayList<>();
+        Tarefa tarefaUm = new Tarefa("2", "tarefa2", "1", true, 2);
+        Tarefa tarefaDois = new Tarefa("3", "tarefa3", "1", true, 3);
+ 
+        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaUm);
+        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaDois);
+ 
+        listaTarefas.add(tarefa1);
+        listaTarefas.add(tarefa2);
 
-    //     Map<String, Object> tarefa1 = new HashMap<>();
-    //     tarefa1.put("idTarefa", "2");
-    //     tarefa1.put("descricaoTarefa", "tarefa2");
-    //     tarefa1.put("idUsuario", "1");
-    //     tarefa1.put("completa", true);
-    //     tarefa1.put("order", 2);
+        tarefasObjeto.put("listaTarefas", listaTarefas);
 
-    //     Map<String, Object> tarefa2 = new HashMap<>();
-    //     tarefa2.put("idTarefa", "3");
-    //     tarefa2.put("descricaoTarefa", "tarefa3");
-    //     tarefa2.put("idUsuario", "1");
-    //     tarefa2.put("completa", true);
-    //     tarefa2.put("order", 3);
-
-    //     Tarefa tarefaUm = new Tarefa("2", "tarefa2", "1", true, 2);
-    //     Tarefa tarefaDois = new Tarefa("3", "tarefa3", "1", true, 3);
-
-    //     listaTarefas.add(tarefa1);
-    //     listaTarefas.add(tarefa2);
-
-    //     when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaUm);
-    //     when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaDois);
-
-    //     tarefasObjeto.put("listaTarefas", listaTarefas);
-
-    //     Map<String, Object> response = tarefaService.priorizarTarefa(tarefasObjeto);
+        Map<String, Object> response = tarefaService.priorizarTarefa(tarefasObjeto);
     
     //     // when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefaUm)); - mais um order
     //     // when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefaDois)); - menos um order
@@ -187,5 +187,5 @@ public class TarefaServiceTest {
     
     //     assertTrue((Boolean) response.get("success"));
     //     // assertEquals("Erro na alteração de tarefa!", response.get("message"));
-    // }
+    }
 }

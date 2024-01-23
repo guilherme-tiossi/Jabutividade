@@ -1,3 +1,19 @@
+O Jabutividade é uma plataforma de produtividade focada em auxiliar o usuário com sua organização pessoal, oferecendo não somente um ambiente eficiente mas também amigável e sereno, onde encorajamos a consistência e tranquilidade por toda a jornada de nossos usuários.
+
+
+FUNCIONALIDADES:
+    Gerenciamento de tarefas; (feito)
+    Notas;
+    Pomodoro ao iniciar uma tarefa;
+    Sistema de Amizade;
+    Chat;
+    Objetivos Principais;
+    Mensagens automáticas de apoio e tranquilidade;
+    Introdução por cada uma dessas após criar a conta;
+    
+    
+    
+
 FRONT-ANGULAR
     CONVENÇÕES DE NOMEAÇÃO:
         > cameltoe (primeiraSegunda)

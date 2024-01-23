@@ -42,7 +42,7 @@ public class Tarefa {
 
     @Override
     public String toString() {
-        return "Tarefa{id=" + idTarefa + ", descricao='" + descricaoTarefa + "', order=" + order + ", completa=" + completa + ", idUsuário= " + idUsuario + "}";
+        return "Tarefa{idTarefa=" + idTarefa + ", descricaoTarefa='" + descricaoTarefa + "', order=" + order + ", completa=" + completa + ", idUsuário= " + idUsuario + "}";
     }
 
 }
