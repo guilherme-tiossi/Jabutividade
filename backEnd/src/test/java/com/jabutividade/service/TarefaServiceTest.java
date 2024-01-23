@@ -11,9 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +29,7 @@ import com.jabutividade.backEnd.services.TarefaService;
 @SpringBootTest(classes = BackEndApplication.class)
 public class TarefaServiceTest {
 
+    private static final Logger log = LoggerFactory.getLogger(TarefaService.class);
     @MockBean
     private TarefaRepository tarefaRepository;
 
@@ -168,8 +172,13 @@ public class TarefaServiceTest {
         Tarefa tarefaUm = new Tarefa("2", "tarefa2", "1", true, 2);
         Tarefa tarefaDois = new Tarefa("3", "tarefa3", "1", true, 3);
  
-        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaUm);
-        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(tarefaDois);
+        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(null);
+
+        tarefaRepository.save(tarefaUm);
+        tarefaRepository.save(tarefaDois);
+
+        when(tarefaRepository.findByIdTarefa("2")).thenReturn(Arrays.asList(tarefaUm));
+        when(tarefaRepository.findByIdTarefa("3")).thenReturn(Arrays.asList(tarefaDois));
  
         listaTarefas.add(tarefa1);
         listaTarefas.add(tarefa2);
@@ -178,14 +187,74 @@ public class TarefaServiceTest {
 
         Map<String, Object> response = tarefaService.priorizarTarefa(tarefasObjeto);
     
-    //     // when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefaUm)); - mais um order
-    //     // when(tarefaRepository.findByIdTarefa("1")).thenReturn(Arrays.asList(tarefaDois)); - menos um order
-    //     // when(tarefaRepository.save(any(Tarefa.class))).thenReturn(null); 
+        verify(tarefaRepository, times(1)).findByIdTarefa("2");
+        verify(tarefaRepository, times(1)).findByIdTarefa("3");
+        verify(tarefaRepository, times(4)).save(any(Tarefa.class));
+
+        Tarefa tarefaUmAlterada = tarefaRepository.findByIdTarefa("2").get(0);
+        Tarefa tarefaDoisAlterada = tarefaRepository.findByIdTarefa("3").get(0);
+
+        assertEquals(tarefaUm.getOrder(), tarefaUmAlterada.getOrder());
+        assertEquals(tarefaDois.getOrder(), tarefaDoisAlterada.getOrder());
+        assertEquals(3, tarefaUmAlterada.getOrder());
+        assertEquals(2, tarefaDoisAlterada.getOrder());
+        
+        
+        assertTrue((Boolean) response.get("success"));
+    }
+
+    @Test
+    void testePostergarTarefa() {
+        Map<String, Object> tarefasObjeto = new HashMap<>();
+        tarefasObjeto.put("order", 2);
+ 
+        List<Map<String, Object>> listaTarefas = new ArrayList<>();
+ 
+        Map<String, Object> tarefa1 = new HashMap<>();
+        tarefa1.put("idTarefa", "2");
+        tarefa1.put("descricaoTarefa", "tarefa2");
+        tarefa1.put("idUsuario", "1");
+        tarefa1.put("completa", true);
+        tarefa1.put("order", 2);
+ 
+        Map<String, Object> tarefa2 = new HashMap<>();
+        tarefa2.put("idTarefa", "3");
+        tarefa2.put("descricaoTarefa", "tarefa3");
+        tarefa2.put("idUsuario", "1");
+        tarefa2.put("completa", true);
+        tarefa2.put("order", 3);
+
+        Tarefa tarefaUm = new Tarefa("2", "tarefa2", "1", true, 2);
+        Tarefa tarefaDois = new Tarefa("3", "tarefa3", "1", true, 3);
+ 
+        when(tarefaRepository.save(any(Tarefa.class))).thenReturn(null);
+
+        tarefaRepository.save(tarefaUm);
+        tarefaRepository.save(tarefaDois);
+
+        when(tarefaRepository.findByIdTarefa("2")).thenReturn(Arrays.asList(tarefaUm));
+        when(tarefaRepository.findByIdTarefa("3")).thenReturn(Arrays.asList(tarefaDois));
+ 
+        listaTarefas.add(tarefa1);
+        listaTarefas.add(tarefa2);
+
+        tarefasObjeto.put("listaTarefas", listaTarefas);
+
+        Map<String, Object> response = tarefaService.postergarTarefa(tarefasObjeto);
     
-    //     // verify(tarefaRepository, times(1)).findByIdTarefa("1");
-    //     // verify(tarefaRepository, times(1)).save(any(Tarefa.class));
-    
-    //     assertTrue((Boolean) response.get("success"));
-    //     // assertEquals("Erro na alteração de tarefa!", response.get("message"));
+        verify(tarefaRepository, times(1)).findByIdTarefa("2");
+        verify(tarefaRepository, times(1)).findByIdTarefa("3");
+        verify(tarefaRepository, times(4)).save(any(Tarefa.class));
+
+        Tarefa tarefaUmAlterada = tarefaRepository.findByIdTarefa("2").get(0);
+        Tarefa tarefaDoisAlterada = tarefaRepository.findByIdTarefa("3").get(0);
+
+        assertEquals(tarefaUm.getOrder(), tarefaUmAlterada.getOrder());
+        assertEquals(tarefaDois.getOrder(), tarefaDoisAlterada.getOrder());
+        assertEquals(3, tarefaUmAlterada.getOrder());
+        assertEquals(2, tarefaDoisAlterada.getOrder());
+        
+        
+        assertTrue((Boolean) response.get("success"));
     }
 }
