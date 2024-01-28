@@ -1,21 +1,21 @@
 
 
-<div class="container-fluid d-flex justify-content-start" style="min-height: 100vh; margin-left:8.8%; margin-top:8.8%">
+<div class="container-fluid d-flex justify-content-start" style="padding-left:8.8%; padding-top:8.8%">
     <form (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
         <div class="row">
             <h1 class="display-1 col-md-12 titulo-form"> Login </h1>
         </div>
         <div class="row">
-            <input type="text" placeholder="Login/E-mail" class="col-md-9 input-form form-control rounded-pill border-3" id="loginName" name="login" [(ngModel)]="login" style="font-size: 1.5rem;" />
+            <input type="text" placeholder="Usuário/E-mail" class="col-md-9 input-form form-control rounded-pill border-3" id="loginName" name="login" [(ngModel)]="login" style="font-size: 1.5rem;" />
         </div>
         <div class="row mt-2">
             <input type="password" placeholder="Senha" class="col-md-9 input-form form-control rounded-pill border-3" id="passwordName" name="password" [(ngModel)]="password" style="font-size: 1.5rem;" />
         </div>  
-        <div class="row align-items-end justify-content-end">
-            <button type="submit" class="rounded-4 col-md-4 m-2 btn btn-dark" style="color:rgb(174, 193, 153);; font-size: 1.8rem;"> <b> Entrar </b> </button>
+        <div class="row align-items-end justify-content-center">
+            <button type="submit" class="rounded-4 col-md-4 m-2 btn btn-dark" style="color:rgb(174, 193, 153); font-size: 1.8rem;"> <b> Entrar </b> </button>
         </div>
-        <div class="row align-items-start justify-content-start">
-            <b (click)="sharedService.showComponent('cadastro')" class="form-link text-center p-1 col-md-8 rounded-pill" style="font-size: 1.5rem;">Não tenho conta</b>
+        <div class="row align-items-start justify-content-center">
+            <b (click)="sharedService.showComponent('cadastro')" class="m-2 form-link text-center col-md-3 rounded-pill">Cadastro</b>
         </div>
     </form>
 </div>

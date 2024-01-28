@@ -1,23 +1,22 @@
-<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+<div class="container-fluid d-flex justify-content-start" style="padding-left:8.8%; padding-top:8.8%">
     <form (ngSubmit)="onSubmitRegister()" #loginForm="ngForm">
         <div class="row">
-            <h1 class="col-md-12"> Cadastro </h1>
+            <h1 class="display-1 col-md-12 titulo-form"> Cadastro </h1>
         </div>
         <div class="row">
-            <label for="loginName" class="col-md-3"> Usuário: </label>
-            <input type="text"  class="col-md-9" id="loginName" name="login" [(ngModel)]="login" />
+            <input type="text" placeholder="Usuário" class="col-md-9 input-form form-control rounded-pill border-3" id="loginName" name="login" [(ngModel)]="login" style="font-size: 1.5rem;"/>
         </div>
         <div class="row mt-2">
-            <label for="EmailName" class="col-md-3"> E-mail: </label>
-            <input type="email"  class="col-md-9" id="emailName" name="email" [(ngModel)]="email" />
+            <input type="email" placeholder="E-mail" class="col-md-9 input-form form-control rounded-pill border-3" id="emailName" name="email" [(ngModel)]="email" style="font-size: 1.5rem;"/>
         </div>
         <div class="row mt-2">
-            <label for="passwordName" class="col-md-3"> Senha: </label>
-            <input type="password"  class="col-md-9" id="passwordName" name="password" [(ngModel)]="password" />
+            <input type="password" placeholder="Senha" class="col-md-9 input-form form-control rounded-pill border-3" id="passwordName" name="password" [(ngModel)]="password" style="font-size: 1.5rem;"/>
         </div>
         <div class="row align-items-center justify-content-center">
-            <button type="submit" class="col-md-4 m-2"> Cadastrar </button>
-            <p (click)="sharedService.showComponent('login')" style="color:blue;cursor: pointer;">Já tenho conta</p>
+            <button type="submit" class="rounded-4 col-md-5 m-2 btn btn-dark" style="color:rgb(174, 193, 153); font-size: 1.8rem;"> <b> Cadastrar </b> </button>
+        </div>
+        <div class="row align-items-start justify-content-center">
+            <b (click)="sharedService.showComponent('login')" class="m-2 form-link text-center col-md-3 rounded-pill">Login</b>
         </div>
     </form>
 </div>
