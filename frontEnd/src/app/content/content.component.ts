@@ -57,6 +57,9 @@ export class ContentComponent implements OnInit {
   }
 
   onLogin(input: any): void {
+
+    this.componentToShow = "carregando";
+    
     this.axiosService.request(
       "POST",
       "/login",
@@ -92,12 +95,6 @@ export class ContentComponent implements OnInit {
       error => {
         this.handleError(error, "cadastro");
       })
-  }
-
-  logout(): void {
-    this.axiosService.setAuthToken(null);
-    this.axiosService.setIdUser(null);
-    this.componentToShow = "login";
   }
 
   private handleError(error: any, caso: string): void {

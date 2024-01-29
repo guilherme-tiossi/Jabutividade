@@ -12,7 +12,6 @@
 </div>
 
 
-<button *ngIf="componentToShow == 'home'" (click)="logout()"> Logout </button>
 <app-auth-content *ngIf="componentToShow == 'home'"/>
 
 <div *ngIf="mensagensErro.length > 0" class="error-messages">

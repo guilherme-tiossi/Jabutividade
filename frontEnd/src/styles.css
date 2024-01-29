@@ -18,6 +18,10 @@ body{
     border-color: rgb(33, 37, 41);
 }
 
+.tarefaCompleta {
+    background-color: red !important;
+}
+
 .form-link {
     font-family: ubuntu;
     color: #4a523d;
@@ -28,4 +32,15 @@ body{
     background-color: #8fa177;
     color: rgb(33, 37, 41);
     cursor: pointer; 
+}
+
+.botao_custom {
+    color:rgb(174, 193, 153); 
+    font-size: 1.8rem;
+}
+
+.borderTarefas {
+    z-index: 1000;
+    border: 3.75px solid rgb(33, 37, 41);
+    border-radius: 4vh;
 }
