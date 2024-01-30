@@ -19,19 +19,21 @@
                 <span *ngIf="tarefa.order > tarefa.primeiroArray" style="cursor: pointer;" (click)="priorizarOrderTarefa(tarefa.order)"> ▲ </span>
                 <span *ngIf="tarefa.order < tarefa.tamanhoArray" style="cursor: pointer;" (click)="postergarOrderTarefa(tarefa.order)"> ▼ </span> 
             </div>
-            <div class="col-6 d-flex align-items-center" *ngIf="idTarefaEdicao != tarefa.idTarefa">
+            <div class="col-7 d-flex align-items-center" *ngIf="idTarefaEdicao != tarefa.idTarefa">
                 <h3 class="m-0"> {{ tarefa.descricaoTarefa }} </h3>
             </div>
-            <div class="col-6 d-flex align-items-center" *ngIf="idTarefaEdicao == tarefa.idTarefa">
-                <input class="col-6" type="text" id="inputEdicaoTarefa" name="inputEdicaoTarefa" [(ngModel)]="descricaoTarefaEdicao" /> 
+            <div class="col-7 d-flex align-items-center" *ngIf="idTarefaEdicao == tarefa.idTarefa">
+                <input class="col-6 input-form form-control rounded-pill border-3" type="text" id="inputEdicaoTarefa" name="inputEdicaoTarefa" [(ngModel)]="descricaoTarefaEdicao" /> 
             </div>
-            <div class="col-1"> 
+            <div class="col-2"> 
                 <input type="checkbox" [checked]="tarefa.completa" (change)="completarTarefa(tarefa.idTarefa, tarefa.completa)"> 
             </div>
-            <div class="col-4"> 
-                <button *ngIf="idTarefaEdicao != tarefa.idTarefa" class="btn btn-danger" (click)="deletarTarefa(tarefa.idTarefa)">Deletar</button>
-                <button class="btn btn-primary" (click)="editarTarefaForm(tarefa.idTarefa)">{{ idTarefaEdicao == tarefa.idTarefa ? "Cancelar" : "Editar" }}</button>
-                <button *ngIf="idTarefaEdicao == tarefa.idTarefa" class="btn btn-success" (click)="editarTarefa(tarefa.idTarefa)">Confirmar</button>
+            <div class="col-2"> 
+                <button *ngIf="idTarefaEdicao != tarefa.idTarefa" class="btn" (click)="deletarTarefa(tarefa.idTarefa)"> <i class="fa fa-trash"> </i></button>
+                <button class="btn" (click)="editarTarefaForm(tarefa.idTarefa)">
+                    <i class="fas fa-{{ idTarefaEdicao == tarefa.idTarefa ? 'times' : 'edit' }}"></i>
+                </button>
+                <button *ngIf="idTarefaEdicao == tarefa.idTarefa" class="btn" (click)="editarTarefa(tarefa.idTarefa)"><i class="fa fa-edit"></i></button>
             </div>
         </div>
     </div>
