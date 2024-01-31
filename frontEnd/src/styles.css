@@ -41,7 +41,25 @@ body{
 }
 
 .borderTarefas {
-    z-index: 1000;
+    z-index: 10000;
     border: 3.75px solid rgb(33, 37, 41);
     border-radius: 4vh;
 }
+
+.inputTarefa {
+    border-top-right-radius: 4vh;
+    border-top-left-radius: 4vh;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 3.75px solid rgb(33, 37, 41);
+    border-bottom-right-radius: 0vh;
+    border-bottom-left-radius: 0vh;
+}
+
+.inputTarefa::placeholder {
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 50px;
+    padding-top: 10px;
+  }

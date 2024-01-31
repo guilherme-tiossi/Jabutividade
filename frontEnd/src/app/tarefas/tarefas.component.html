@@ -1,8 +1,8 @@
 <div id="tarefas" class="col-6 container mx-auto text-center borderTarefas pb-3">
     <div class="row">
-        <form #FormCriarTarefa="ngForm" (ngSubmit)="onSubmit()" class="col-12">
+        <form #FormCriarTarefa="ngForm" (ngSubmit)="onSubmit()" class="p-0 col-12">
             <div class="form-group">
-                <input type="text" id="txt_descricaoTarefaCriacao" name="txt_descricaoTarefaCriacao" placeholder="Tarefa" [(ngModel)]="descricaoTarefaCriacao" class="col-md-9 input-form form-control rounded-pill border-3" required>
+                <input type="text" id="txt_descricaoTarefaCriacao" name="txt_descricaoTarefaCriacao" placeholder="Tarefa" [(ngModel)]="descricaoTarefaCriacao" class="inputTarefa input-form form-control" required>
             </div>
             <input type="hidden" name="idUsuario" [value]="IDUSUARIO" required>
             <button type="submit" class="rounded-4 col-1 m-2 btn btn-dark botao_custom"> <b> + </b> </button> 
