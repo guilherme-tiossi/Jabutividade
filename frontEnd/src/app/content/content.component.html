@@ -1,16 +1,10 @@
-<div *ngIf="componentToShow == 'login'">
-    <app-login-form  (onSubmitLoginEvent)="onLogin($event)" />
-</div>
+<app-login-form  (onSubmitLoginEvent)="onLogin($event)" *ngIf="componentToShow == 'login'"/>
 
-<div *ngIf="componentToShow == 'cadastro'">
-    <app-register-form (onSubmitRegisterEvent)="onRegister($event)" />
-</div>
+<app-register-form (onSubmitRegisterEvent)="onRegister($event)" *ngIf="componentToShow == 'cadastro'"/>
 
+<app-carregando *ngIf="componentToShow == 'carregando'" />
 
-<div *ngIf="componentToShow == 'carregando'">
-    <app-carregando></app-carregando>
-</div>
-
+<app-email-confirmation *ngIf="componentToShow == 'email-confirmation'"/>
 
 <app-auth-content *ngIf="componentToShow == 'home'"/>
 

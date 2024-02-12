@@ -26,8 +26,12 @@ export class ContentComponent implements OnInit {
           if (validToken) {
             const idUser = this.axiosService.getIdUser();
             this.axiosService.setAuthToken(authToken);
-            this.axiosService.setIdUser(idUser);
-            this.componentToShow = 'home';
+            this.axiosService.setIdUser(idUser);        
+            if (this.axiosService.getConfirmedEmail() === 'undefined') {
+              this.componentToShow = 'email-confirmation';
+            } else {
+              this.componentToShow = 'home';
+            }
           } else {
             this.deslogar();
           }
@@ -71,7 +75,12 @@ export class ContentComponent implements OnInit {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
-      this.componentToShow = "home";
+      this.axiosService.setConfirmedEmail(response.data.confirmedEmail);     
+      if (this.axiosService.getConfirmedEmail() === 'undefined') {
+        this.componentToShow = 'email-confirmation';
+      } else {
+        this.componentToShow = 'home';
+      }
     }).catch(error => {
       this.handleError(error, "login");
     })
@@ -89,8 +98,12 @@ export class ContentComponent implements OnInit {
     ).then(response => {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
-      this.axiosService.setIdUser(response.data.id);
-      this.componentToShow = "home";
+      this.axiosService.setIdUser(response.data.id);     
+      if (this.axiosService.getConfirmedEmail() === 'undefined') {
+        this.componentToShow = 'email-confirmation';
+      } else {
+        this.componentToShow = 'home';
+      }
     }).catch(
       error => {
         this.handleError(error, "cadastro");

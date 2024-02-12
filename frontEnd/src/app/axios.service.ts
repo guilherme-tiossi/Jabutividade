@@ -19,6 +19,18 @@ export class AxiosService {
     return window.localStorage.getItem("id_user");
   }
 
+  getConfirmedEmail(): string | null {
+    return window.localStorage.getItem("confirmed_email");
+  }
+
+  setConfirmedEmail(value: string | null): void {
+    if (value !== null) {
+      window.localStorage.setItem("confirmed_email", value);
+    } else {
+      window.localStorage.removeItem("confirmed_email");
+    }
+  }
+
   setIdUser(id: string | null): void {
     if (id !== null) {
       window.localStorage.setItem("id_user", id);

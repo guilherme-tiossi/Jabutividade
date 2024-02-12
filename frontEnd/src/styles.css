@@ -40,6 +40,12 @@ body{
     font-size: 1.8rem;
 }
 
+.botao_custom_confirm_email {
+    color:rgb(174, 193, 153); 
+    font-size: 1.4rem;
+}
+
+
 .borderTarefas {
     z-index: 10000;
     border: 3.75px solid rgb(33, 37, 41);

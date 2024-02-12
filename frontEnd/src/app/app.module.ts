@@ -11,6 +11,7 @@ import { AuthContentComponent } from './auth-content/auth-content.component';
 import { TarefasComponent } from './tarefas/tarefas.component';
 import { CarregandoComponent } from './carregando/carregando.component';
 import { MenuComponent } from './menu/menu.component';
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MenuComponent } from './menu/menu.component';
     RegisterFormComponent,
     TarefasComponent,
     CarregandoComponent,
-    MenuComponent
+    MenuComponent,
+    EmailConfirmationComponent
   ],
   imports: [
     BrowserModule,
