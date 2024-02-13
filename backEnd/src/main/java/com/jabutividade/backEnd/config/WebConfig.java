@@ -32,7 +32,7 @@ public class WebConfig {
             HttpMethod.PUT.name(),
             HttpMethod.DELETE.name()
         ));
-        config.setMaxAge(3600L);
+        config.setMaxAge(36000L);
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);

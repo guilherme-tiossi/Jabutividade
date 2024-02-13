@@ -1,24 +1,36 @@
 <div class="align-items-end text-center">
     <app-menu />
 </div>
-<div class="col-8 container mx-auto text-center" style="padding-top:4.8%">
+<div class="col-8 container mx-auto text-center" style="padding-top:4.8%" [hidden]="!showEmailForm">
     <div>
         <h2 class="display-5 titulo-form"> Para continuar, confirme seu e-mail </h2>
         <p style="font-size: 1.6rem;">Um código de confirmação será enviado para o endereço de e-mail fornecido. Por favor, verifique sua caixa de entrada e siga as instruções para concluir o processo de confirmação.</p>
     </div>
-    <div class="col-8 container mx-auto text-center">
+    <div class="col-6 mt-4 container mx-auto text-center">
         <form (ngSubmit)="onSubmitEmail()">
-            <div class="text-start">
-                <h3 class="display-8"> Insira seu e-mail </h3>
-            </div>
             <div class="mt-2">
                 <input type="email" placeholder="E-mail" class="input-form form-control rounded-pill border-3" id="emailName" name="email" [(ngModel)]="email" style="font-size: 1.2rem; width: 100% !important;"/>
             </div>
-            <div class="mt-2 d-none">
+            <div class="mt-2">
+                <button type="submit" class="rounded-4 m-2 btn btn-dark botao_custom_confirm_email"> Receber  Código </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="col-8 container mx-auto text-center" style="padding-top:5.8%" [hidden]="showEmailForm">
+    <div>
+        <h2 class="display-5 titulo-form"> Insira o código de seis dígitos </h2>
+        <p style="font-size: 1.6rem;">Para confirmar seu e-mail, insira o código de 6 dígitos enviado para o endereço {{email}}.</p>
+    </div>
+    <div class="col-6 mt-4 container mx-auto text-center">
+        <form (ngSubmit)="onSubmitCode()">
+            <div class="mt-2">
                 <input type="text" placeholder="Código" class=" input-form form-control rounded-pill border-3" id="codigoName" name="codigo" [(ngModel)]="codigo" style="font-size: 1.2rem; width: 100%"/>
             </div>
-            <div class="justify-content-start mt-2">
-                <button type="submit" class="rounded-4 m-2 btn btn-dark botao_custom_confirm_email"> Enviar Código </button>
+            <div class="mt-2">
+                <button type="submit" class="rounded-4 m-2 btn btn-dark botao_custom_confirm_email"> Confirmar E-mail </button>
+                <button type="submit" (click)="cancelSubmitCode()" class="rounded-4 m-2 btn btn-dark botao_custom_confirm_email"> <i class="fa fa-cancel"> </i> </button>
             </div>
         </form>
     </div>

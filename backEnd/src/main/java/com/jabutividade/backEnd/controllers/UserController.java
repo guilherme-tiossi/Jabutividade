@@ -14,6 +14,7 @@ import com.jabutividade.backEnd.dto.CredentialsDto;
 import com.jabutividade.backEnd.dto.SignUpDto;
 import com.jabutividade.backEnd.dto.UserDto;
 import com.jabutividade.backEnd.services.UserService;
+import com.jabutividade.utils.CodigoAleatorio;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class UserController {
     
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
@@ -50,5 +51,12 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @PostMapping("/enviar-codigo/{email}")
+    public void enviarCodigoVerificacaoEmail(@PathVariable String email) {
+        String codigo = CodigoAleatorio.gerarCodigo();
+        System.out.println("------------------------------------------------\n código: " + codigo);
+        System.out.println("------------------------------------------------\n email: " + email);
     }
 }
