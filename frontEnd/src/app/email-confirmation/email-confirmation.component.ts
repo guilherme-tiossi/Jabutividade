@@ -33,7 +33,7 @@ export class EmailConfirmationComponent {
 
     this.axiosService.request(
       "POST",
-      "/enviar-codigo/emailteste",
+      "/enviar-codigo/guilherme.a.m.tiossi@gmail.com",
       {
         // order: order,
         // listaTarefas: this.listaTarefasExibicao.map(tarefa => {

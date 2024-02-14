@@ -13,6 +13,7 @@ import com.jabutividade.backEnd.config.UserAuthProvider;
 import com.jabutividade.backEnd.dto.CredentialsDto;
 import com.jabutividade.backEnd.dto.SignUpDto;
 import com.jabutividade.backEnd.dto.UserDto;
+import com.jabutividade.backEnd.services.EmailService;
 import com.jabutividade.backEnd.services.UserService;
 import com.jabutividade.utils.CodigoAleatorio;
 
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class UserController {
     
     private final UserService userService;
+    private final EmailService emailService;
     private final UserAuthProvider userAuthProvider;
 
     @PostMapping("/login")
@@ -56,7 +58,7 @@ public class UserController {
     @PostMapping("/enviar-codigo/{email}")
     public void enviarCodigoVerificacaoEmail(@PathVariable String email) {
         String codigo = CodigoAleatorio.gerarCodigo();
-        System.out.println("------------------------------------------------\n código: " + codigo);
-        System.out.println("------------------------------------------------\n email: " + email);
+
+        emailService.enviarCodigoVerificacaoEmail(codigo, email);
     }
 }
