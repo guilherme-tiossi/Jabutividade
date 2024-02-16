@@ -62,6 +62,7 @@ public class UserController {
         emailService.enviarCodigoVerificacaoEmail(codigo, email);
     }
 
+    //userController.java
     @PostMapping("/validar-codigo/{codigo}")
     public void validarCodigoVerificacaoEmail(@PathVariable String codigo, @RequestBody String email) {
         emailService.verificarCodigoVerificacaoEmail(codigo, email);

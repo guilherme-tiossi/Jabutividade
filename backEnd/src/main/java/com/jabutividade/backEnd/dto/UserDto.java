@@ -13,5 +13,6 @@ public class UserDto {
     private String id;
     private String username;
     private String token;
+    private Boolean confirmedEmail;
     
 }

@@ -72,11 +72,12 @@ export class ContentComponent implements OnInit {
         password: input.password
       }
     ).then(response => {
+      console.log(response.data)
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
-      this.axiosService.setConfirmedEmail(response.data.confirmedEmail);     
-      if (this.axiosService.getConfirmedEmail() === 'undefined') {
+      this.axiosService.setConfirmedEmail(response.data.confirmedEmail);  
+      if (this.axiosService.getConfirmedEmail() === null) {
         this.componentToShow = 'email-confirmation';
       } else {
         this.componentToShow = 'home';

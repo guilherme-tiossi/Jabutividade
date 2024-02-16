@@ -59,9 +59,8 @@ public class EmailService {
 
     public void verificarCodigoVerificacaoEmail(String codigo, String email) {
         User usuario = null;
-    
         try {
-            usuario = userService.findByEmail(email); 
+            usuario = userService.findByEmail(email.replaceAll("\"", "")); 
         } catch (UsernameNotFoundException e) {
             e.printStackTrace(); 
         }
@@ -90,3 +89,7 @@ public class EmailService {
         }
     }
 }
+
+
+
+
