@@ -1,3 +1,7 @@
+<div *ngIf="mensagensErro.length > 0" class="error-messages">
+  <div *ngFor="let errorMessage of mensagensErro">{{ errorMessage }}</div>
+</div>
+
 <app-login-form  (onSubmitLoginEvent)="onLogin($event)" *ngIf="componentToShow == 'login'"/>
 
 <app-register-form (onSubmitRegisterEvent)="onRegister($event)" *ngIf="componentToShow == 'cadastro'"/>
@@ -7,7 +11,3 @@
 <app-email-confirmation *ngIf="componentToShow == 'email-confirmation'"/>
 
 <app-auth-content *ngIf="componentToShow == 'home'"/>
-
-<div *ngIf="mensagensErro.length > 0" class="error-messages">
-    <div *ngFor="let errorMessage of mensagensErro">{{ errorMessage }}</div>
-  </div>

@@ -22,12 +22,14 @@ export class ContentComponent implements OnInit {
 
     if (authToken != null) {
       this.validarToken(authToken)
-        .then((validToken) => {
+        .then(async (validToken) => {
           if (validToken) {
             const idUser = this.axiosService.getIdUser();
             this.axiosService.setAuthToken(authToken);
-            this.axiosService.setIdUser(idUser);        
-            if (this.axiosService.getConfirmedEmail() === 'undefined') {
+            this.axiosService.setIdUser(idUser);
+            const isEmailValid = await this.validarEmail(idUser);
+            console.log(isEmailValid)
+            if (!isEmailValid) {
               this.componentToShow = 'email-confirmation';
             } else {
               this.componentToShow = 'home';
@@ -60,10 +62,24 @@ export class ContentComponent implements OnInit {
     return result;
   }
 
+  async validarEmail(id: string | null): Promise<boolean> {
+    try {
+      const response = await this.axiosService.request(
+        "GET",
+        "/validar-email/" + id,
+        {}
+      );
+      return response.data; // Assuming response.data contains the boolean value
+    } catch (error) {
+      console.error("Error while validating email:", error);
+      return false; // Return false in case of error
+    }
+  }
+
   onLogin(input: any): void {
 
     this.componentToShow = "carregando";
-    
+
     this.axiosService.request(
       "POST",
       "/login",
@@ -71,13 +87,12 @@ export class ContentComponent implements OnInit {
         login: input.login,
         password: input.password
       }
-    ).then(response => {
-      console.log(response.data)
+    ).then(async response => {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
-      this.axiosService.setConfirmedEmail(response.data.confirmedEmail);  
-      if (this.axiosService.getConfirmedEmail() === null) {
+      const isEmailValid = await this.validarEmail(response.data.id);
+      if (!isEmailValid) {
         this.componentToShow = 'email-confirmation';
       } else {
         this.componentToShow = 'home';
@@ -96,11 +111,12 @@ export class ContentComponent implements OnInit {
         email: input.email,
         password: input.password
       }
-    ).then(response => {
+    ).then(async response => {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
-      this.axiosService.setIdUser(response.data.id);     
-      if (this.axiosService.getConfirmedEmail() === 'undefined') {
+      this.axiosService.setIdUser(response.data.id);
+      const isEmailValid = await this.validarEmail(response.data.id);
+      if (!isEmailValid) {
         this.componentToShow = 'email-confirmation';
       } else {
         this.componentToShow = 'home';
@@ -127,6 +143,11 @@ export class ContentComponent implements OnInit {
     this.axiosService.setAuthToken(null);
     this.axiosService.setIdUser(null);
     this.componentToShow = 'login';
+  }
+
+  confirmadoEmail(): void {
+    this.axiosService.setConfirmedEmail("true");
+    this.componentToShow = 'home';
   }
 
 }
