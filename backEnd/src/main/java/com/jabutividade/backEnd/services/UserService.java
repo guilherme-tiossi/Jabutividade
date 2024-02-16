@@ -3,7 +3,10 @@ package com.jabutividade.backEnd.services;
 import java.nio.CharBuffer;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    
+        private static final Logger log = LoggerFactory.getLogger(TarefaService.class);
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
@@ -55,6 +59,29 @@ public class UserService {
         User user = userRepository.findByUsername(login)
                 .orElseThrow(() -> new AppException("Usuário desconhecido", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
+    }
+
+    public User findByEmail(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);        
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        }
+    }
+    
+    public User editUser(User editUser) {
+        User user = userRepository.findById(editUser.getId())
+                .orElseThrow(() -> new AppException("Usuário não encontrado", HttpStatus.NOT_FOUND));
+        
+        user.setUsername(editUser.getUsername());        
+        user.setEmail(editUser.getEmail());
+        user.setConfirmedEmail(editUser.getConfirmedEmail());
+        user.setEmailConfirmationCode(editUser.getEmailConfirmationCode());
+        user.setEmailConfirmationCodeExpiration(editUser.getEmailConfirmationCodeExpiration());
+        User savedUser = userRepository.save(user);
+        
+        return savedUser;
     }
 
 }

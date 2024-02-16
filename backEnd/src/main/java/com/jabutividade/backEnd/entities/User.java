@@ -1,5 +1,7 @@
 package com.jabutividade.backEnd.entities;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,4 +23,19 @@ public class User {
     private String email;
     private String password;
     private Boolean confirmedEmail;
+    private String emailConfirmationCode;
+    private Instant emailConfirmationCodeExpiration;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmedEmail=" + confirmedEmail +
+                ", emailConfirmationCode='" + emailConfirmationCode + '\'' +
+                ", emailConfirmationCodeExpiration=" + emailConfirmationCodeExpiration +
+                '}';
+    }
 }

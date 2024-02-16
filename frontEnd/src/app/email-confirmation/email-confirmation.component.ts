@@ -33,31 +33,26 @@ export class EmailConfirmationComponent {
 
     this.axiosService.request(
       "POST",
-      "/enviar-codigo/guilherme.a.m.tiossi@gmail.com",
-      {
-        // order: order,
-        // listaTarefas: this.listaTarefasExibicao.map(tarefa => {
-          // const novaTarefa = { ...tarefa };
-          // delete novaTarefa.tamanhoArray;
-          // return novaTarefa;
-        // })
-      }
+      "/enviar-codigo/" + this.email,
+      {}
     ).then(
       (response) => {
-        // if (response.data.success === true) {
-        //   this.carregarTarefas()
-        // } else {
-        //   this.handleError(response.data.message, "o rebaixamento de tarefa.")
-        // }
+
       }).catch(
-        // (error) => {
-          // this.handleError(error, "o rebaixamento de tarefa.")
-        // }
+        
       )
     this.showEmailForm = false;
   }
 
   onSubmitCode() {
+    this.axiosService.request(
+      "POST",
+      "/validar-codigo/" + this.codigo,
+      this.email
+    ).then(
+      (response) => {
+      }).catch(
+      )
   }
 
   cancelSubmitCode() {
