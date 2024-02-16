@@ -84,4 +84,10 @@ public class UserService {
         return savedUser;
     }
 
+    public Boolean validarEmail(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException("Usuário não encontrado", HttpStatus.NOT_FOUND));
+        return user.getConfirmedEmail();
+    }
+
 }

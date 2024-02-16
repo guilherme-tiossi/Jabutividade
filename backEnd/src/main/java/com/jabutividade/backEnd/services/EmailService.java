@@ -1,8 +1,9 @@
 package com.jabutividade.backEnd.services;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +17,6 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final UserService userService;
 
-    @Autowired
     public EmailService(JavaMailSender mailSender, UserService userService) {
         this.mailSender = mailSender;
         this.userService = userService;
@@ -33,7 +33,7 @@ public class EmailService {
         emailContent.append("Atenciosamente,\nEquipe do Jabutividade");        
 
         SimpleMailMessage mensagemEmail = new SimpleMailMessage();
-        mensagemEmail.setSubject("Còdigo de verificação de e-mail no Jabuti");
+        mensagemEmail.setSubject("Código de verificação de e-mail no Jabuti");
         mensagemEmail.setText(emailContent.toString());
         mensagemEmail.setTo(email);
         mensagemEmail.setFrom("noreply@jabuti.com");
@@ -57,39 +57,46 @@ public class EmailService {
         }
     }
 
-    public void verificarCodigoVerificacaoEmail(String codigo, String email) {
-        User usuario = null;
+    public Map<String, Object> verificarCodigoVerificacaoEmail(String codigo, String email) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            usuario = userService.findByEmail(email.replaceAll("\"", "")); 
-        } catch (UsernameNotFoundException e) {
-            e.printStackTrace(); 
-        }
-        
-        if (usuario != null) {
-            // Check if the email confirmation code is expired
-            if (usuario.getEmailConfirmationCodeExpiration().isBefore(Instant.now())) {
-                System.out.println("Código expirado! Tente novamente");
-                return;
+            User usuario = userService.findByEmail(email.replaceAll("\"", "")); 
+            if (usuario == null) {
+                response.put("message", "Usuário não encontrado para o e-mail " + email + ".");
+                return response;
             }
+
+            if (usuario.getEmailConfirmationCodeExpiration().isBefore(Instant.now())) {
+                response.put("message", "Código expirado! Tente novamente.");
+                return response;
+            }
+    
     
             // Compare strings using equals() method
+
+            // Compare strings using equals() method
             if (!codigo.equals(usuario.getEmailConfirmationCode())) {
-                System.out.println("Código inválido! Tente novamente");
-                return;
+                response.put("message", "Código inválido! Tente novamente.");
+                return response;
             }
-    
+
             // Update user's email confirmation status
             usuario.setEmailConfirmationCode(null);
             usuario.setEmailConfirmationCodeExpiration(null);
             usuario.setConfirmedEmail(true);
-    
-            userService.editUser(usuario);
-        } else {
-            System.out.println("Usuário não encontrado para o email: '" + email+"'");
+
+            if (userService.editUser(usuario).getConfirmedEmail()) {
+                response.put("success", true);
+                return response;
+            } else {
+                response.put("message", "Erro ao confirmar e-mail, tente novamente.");
+            }
+        } catch (UsernameNotFoundException e) {
+            response.put("success", false);
+            response.put("message", "Usuário não encontrado para o e-mail " + email + ".");
         }
+        
+        return response;
     }
 }
-
-
-
-

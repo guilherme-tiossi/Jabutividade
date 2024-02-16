@@ -1,6 +1,7 @@
 package com.jabutividade.backEnd.controllers;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/validar-email/{id}")
+    public Boolean validarEmail(@PathVariable String id) {
+        return userService.validarEmail(id);
+    }
+
     @PostMapping("/enviar-codigo/{email}")
     public void enviarCodigoVerificacaoEmail(@PathVariable String email) {
         String codigo = CodigoAleatorio.gerarCodigo();
@@ -62,9 +68,8 @@ public class UserController {
         emailService.enviarCodigoVerificacaoEmail(codigo, email);
     }
 
-    //userController.java
     @PostMapping("/validar-codigo/{codigo}")
-    public void validarCodigoVerificacaoEmail(@PathVariable String codigo, @RequestBody String email) {
-        emailService.verificarCodigoVerificacaoEmail(codigo, email);
+    public Map<String, Object> validarCodigoVerificacaoEmail(@PathVariable String codigo, @RequestBody String email) {
+        return emailService.verificarCodigoVerificacaoEmail(codigo, email);
     }
 }
