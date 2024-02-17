@@ -62,10 +62,10 @@ public class UserController {
     }
 
     @PostMapping("/enviar-codigo/{email}")
-    public void enviarCodigoVerificacaoEmail(@PathVariable String email) {
+    public Map<String, Object> enviarCodigoVerificacaoEmail(@PathVariable String email) {
         String codigo = CodigoAleatorio.gerarCodigo();
 
-        emailService.enviarCodigoVerificacaoEmail(codigo, email);
+        return emailService.enviarCodigoVerificacaoEmail(codigo, email);
     }
 
     @PostMapping("/validar-codigo/{codigo}")

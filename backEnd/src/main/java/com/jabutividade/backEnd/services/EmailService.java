@@ -22,8 +22,24 @@ public class EmailService {
         this.userService = userService;
     }
 
+    public Map<String, Object> enviarCodigoVerificacaoEmail(String codigo, String email) {
+        Map<String, Object> response = new HashMap<>();
 
-    public void enviarCodigoVerificacaoEmail(String codigo, String email) {
+        User usuario = null;
+
+        try {
+            usuario = userService.findByEmail(email.replaceAll("\"", "")); 
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace(); 
+            response.put("message", "Usuário não encontrado para o e-mail " + email + ".");
+            return response;
+        }
+
+        if (usuario == null) {
+            response.put("message", "Usuário não encontrado para o e-mail " + email + ".");
+            return response;
+        }
+
         StringBuilder emailContent = new StringBuilder();
         emailContent.append("Agradecemos por iniciar o processo de confirmação de e-mail. Para completar a verificação, por favor utilize o seguinte código de verificação:\n\n");
         emailContent.append("Código de Verificação: ").append(codigo).append("\n\n");
@@ -39,22 +55,12 @@ public class EmailService {
         mensagemEmail.setFrom("noreply@jabuti.com");
 
         mailSender.send(mensagemEmail);
+        usuario.setEmailConfirmationCode(codigo);
+        usuario.setEmailConfirmationCodeExpiration(Instant.now().plusSeconds(900));
+        userService.editUser(usuario).toString();
 
-        User usuario = null;
-
-        try {
-            usuario = userService.findByEmail(email); 
-        } catch (UsernameNotFoundException e) {
-            e.printStackTrace(); 
-        }
-        
-        if (usuario != null) {
-            usuario.setEmailConfirmationCode(codigo);
-            usuario.setEmailConfirmationCodeExpiration(Instant.now().plusSeconds(900));
-            userService.editUser(usuario).toString();
-        } else {
-            System.out.println("Usuário não encontrado para o email: " + email);
-        }
+        response.put("success", true);
+        return response;
     }
 
     public Map<String, Object> verificarCodigoVerificacaoEmail(String codigo, String email) {
@@ -72,16 +78,11 @@ public class EmailService {
                 return response;
             }
     
-    
-            // Compare strings using equals() method
-
-            // Compare strings using equals() method
             if (!codigo.equals(usuario.getEmailConfirmationCode())) {
                 response.put("message", "Código inválido! Tente novamente.");
                 return response;
             }
 
-            // Update user's email confirmation status
             usuario.setEmailConfirmationCode(null);
             usuario.setEmailConfirmationCodeExpiration(null);
             usuario.setConfirmedEmail(true);
