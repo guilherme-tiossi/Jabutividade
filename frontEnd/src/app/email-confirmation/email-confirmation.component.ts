@@ -12,9 +12,8 @@ export class EmailConfirmationComponent {
   constructor(private axiosService: AxiosService, private contentComponent: ContentComponent) { }
 
   email: string = "";
-  codigo: string  = "";
+  codigo: string = "";
   showEmailForm: boolean = true;
-  mensagensErro: string[] = []
 
   onSubmitEmail() {
 
@@ -38,59 +37,57 @@ export class EmailConfirmationComponent {
       {}
     ).then(
       (response) => {
-        console.log(response)
-      }).catch(
-        (error) => {
-          this.handleError(error, '', "o envio do código.")
+        if (response.data.success === true) {
+          this.showEmailForm = false;
+        } else {
+          console.log(response)
+          this.handleError(null, response.data.message, "o envio do código.");
         }
-      )
-    this.showEmailForm = false;
+      },
+      (error) => {
+        this.handleError(error, '', "o envio do código.");
+      }
+    );
   }
 
   onSubmitCode() {
+
+    const authToken = this.axiosService.getAuthToken();
+
+    if (authToken == null) { this.contentComponent.deslogar(); return; }
+
     this.axiosService.request(
       "POST",
       "/validar-codigo/" + this.codigo,
       this.email
     ).then(
       (response) => {
-        console.log(response)
         if (response.data.success === true) {
-          this.contentComponent.confirmadoEmail()
+          this.contentComponent.confirmadoEmail();
         } else {
-          console.log(response.data.message)
-          this.handleError(null, response.data.message, "a validação do código.")
+          this.handleError(null, response.data.message, "a validação do código.");
         }
-      }).catch(
-        (error) => {
-          this.handleError(error, '', "a validação do código.")
-        }
-      )
+      },
+      (error) => {
+        this.handleError(error, '', "a validação do código.");
+      }
+    );
   }
 
   cancelSubmitCode() {
     this.showEmailForm = true;
   }
 
-  private handleError(messageObjeto: any, messageRetorno: any, messageGenerica: string): void {
-    console.log(messageObjeto)
-    console.log(messageRetorno)
-    console.log(messageGenerica)
-    this.mensagensErro = []
-    if (messageObjeto.response && messageObjeto.response.data && messageObjeto.response.data.error) {
-      console.log("messageObjeto")
-      this.mensagensErro = messageObjeto.response.data.error
-      return
+  private handleError(messageObjeto: any, messageRetorno: string, messageGenerica: string): void {
+    this.contentComponent.mensagensErro = [];
+    if (messageObjeto && messageObjeto.response && messageObjeto.response.data && messageObjeto.response.data.error) {
+        this.contentComponent.mensagensErro = messageObjeto.response.data.error;
+        return;
     } 
-    console.log(messageRetorno)
-    console.log(messageRetorno.length)
-    console.log(messageRetorno != null)
     if (messageRetorno) {
-      console.log("messageRetorno")
-      this.mensagensErro.push(messageRetorno)
-      return
+        this.contentComponent.mensagensErro.push(messageRetorno);
+        return;
     }
-    console.log("messageGenerica")
-    this.mensagensErro.push("Ocorreu um erro durante " + messageGenerica)
+    this.contentComponent.mensagensErro.push("Ocorreu um erro durante " + messageGenerica);
   }
 }

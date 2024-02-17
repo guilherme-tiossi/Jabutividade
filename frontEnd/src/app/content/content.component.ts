@@ -142,11 +142,13 @@ export class ContentComponent implements OnInit {
   deslogar(): void {
     this.axiosService.setAuthToken(null);
     this.axiosService.setIdUser(null);
+    this.mensagensErro = [];
     this.componentToShow = 'login';
   }
 
   confirmadoEmail(): void {
     this.axiosService.setConfirmedEmail("true");
+    this.mensagensErro = [];
     this.componentToShow = 'home';
   }
 
