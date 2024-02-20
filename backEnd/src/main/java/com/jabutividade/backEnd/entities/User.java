@@ -25,6 +25,7 @@ public class User {
     private Boolean confirmedEmail;
     private String emailConfirmationCode;
     private Instant emailConfirmationCodeExpiration;
+    private String urlProfilePicture;
 
     @Override
     public String toString() {
@@ -35,7 +36,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", confirmedEmail=" + confirmedEmail +
                 ", emailConfirmationCode='" + emailConfirmationCode + '\'' +
-                ", emailConfirmationCodeExpiration=" + emailConfirmationCodeExpiration +
+                ", emailConfirmationCodeExpiration=" + emailConfirmationCodeExpiration + '\'' + 
+                ", urlProfilePicture=" + urlProfilePicture +
                 '}';
     }
 }

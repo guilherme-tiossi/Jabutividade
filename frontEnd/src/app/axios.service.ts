@@ -23,6 +23,31 @@ export class AxiosService {
     return window.localStorage.getItem("confirmed_email");
   }
 
+  getUrlProfilePicture(): string | null {
+    return window.localStorage.getItem("profile_picture");
+  }
+
+  getUsername(): string | null {
+    return window.localStorage.getItem("username");
+  }
+
+  setUsername(username: string | null): void {
+    if (username !== null) {
+      username = (username.length > 10) ? username.substring(0, 12) + '...' : username;
+      window.localStorage.setItem("username", username);
+    } else {
+      window.localStorage.removeItem("username");
+    }
+  }
+
+  setUrlProfilePicture(profilePicture: string | null): void {
+    if (profilePicture !== null) {
+      window.localStorage.setItem("profile_picture", profilePicture);
+    } else {
+      window.localStorage.removeItem("profile_picture");
+    }
+  }
+
   setConfirmedEmail(value: string | null): void {
     if (value !== null) {
       window.localStorage.setItem("confirmed_email", value);

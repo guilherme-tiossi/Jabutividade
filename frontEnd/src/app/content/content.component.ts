@@ -10,6 +10,7 @@ export class ContentComponent implements OnInit {
 
   componentToShow: string = 'carregando';
   mensagensErro: string[] = [];
+  profilePicture: string = '';
 
   constructor(private axiosService: AxiosService, private sharedService: SharedService) { }
 
@@ -20,30 +21,30 @@ export class ContentComponent implements OnInit {
 
     const authToken = this.axiosService.getAuthToken();
 
-    if (authToken != null) {
-      this.validarToken(authToken)
-        .then(async (validToken) => {
-          if (validToken) {
-            const idUser = this.axiosService.getIdUser();
-            this.axiosService.setAuthToken(authToken);
-            this.axiosService.setIdUser(idUser);
-            const isEmailValid = await this.validarEmail(idUser);
-            console.log(isEmailValid)
-            if (!isEmailValid) {
-              this.componentToShow = 'email-confirmation';
-            } else {
-              this.componentToShow = 'home';
-            }
-          } else {
-            this.deslogar();
-          }
-        })
-        .catch(error => {
-          this.deslogar();
-        });
-    } else {
+    if (authToken == null) {
       this.deslogar();
+      return;
     }
+
+    this.validarToken(authToken)
+      .then(async (validToken) => {
+        if (validToken) {
+          const idUser = this.axiosService.getIdUser();
+          this.axiosService.setAuthToken(authToken);
+          this.axiosService.setIdUser(idUser);
+          const isEmailValid = await this.validarEmail(idUser);
+          if (!isEmailValid) {
+            this.componentToShow = 'email-confirmation';
+          } else {
+            this.componentToShow = 'home';
+          }
+        } else {
+          this.deslogar();
+        }
+      })
+      .catch(error => {
+        this.deslogar();
+      });
   }
 
   showComponent(componentToShow: string): void {
@@ -91,6 +92,8 @@ export class ContentComponent implements OnInit {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
+      this.axiosService.setUrlProfilePicture(response.data.urlProfilePicture);
+      this.axiosService.setUsername(response.data.username);
       const isEmailValid = await this.validarEmail(response.data.id);
       if (!isEmailValid) {
         this.componentToShow = 'email-confirmation';
@@ -115,6 +118,8 @@ export class ContentComponent implements OnInit {
       this.mensagensErro = [];
       this.axiosService.setAuthToken(response.data.token);
       this.axiosService.setIdUser(response.data.id);
+      this.axiosService.setUsername(response.data.username);
+      this.axiosService.setUrlProfilePicture("https://thumbs2.imgbox.com/8c/de/6SXbIrPM_t.png");
       const isEmailValid = await this.validarEmail(response.data.id);
       if (!isEmailValid) {
         this.componentToShow = 'email-confirmation';

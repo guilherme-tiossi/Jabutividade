@@ -14,5 +14,6 @@ public class UserDto {
     private String username;
     private String token;
     private Boolean confirmedEmail;
+    private String urlProfilePicture;
     
 }

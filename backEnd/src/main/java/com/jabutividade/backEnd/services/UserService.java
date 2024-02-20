@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-        private static final Logger log = LoggerFactory.getLogger(TarefaService.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -50,6 +49,7 @@ public class UserService {
 
         User user = userMapper.signUpToUser(signUpDto);
 
+        user.setUrlProfilePicture("https://thumbs2.imgbox.com/8c/de/6SXbIrPM_t.png");
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDto.password())));
         User savedUser = userRepository.save(user);
         return userMapper.toUserDto(savedUser);

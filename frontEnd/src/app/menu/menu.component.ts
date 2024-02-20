@@ -12,6 +12,8 @@ export class MenuComponent {
 
   constructor(private axiosService: AxiosService, private contentComponent: ContentComponent) { }
 
+  profilePicture = this.axiosService.getUrlProfilePicture();
+  username = this.axiosService.getUsername();
 
   logout(): void {
     this.contentComponent.componentToShow = "carregando";
