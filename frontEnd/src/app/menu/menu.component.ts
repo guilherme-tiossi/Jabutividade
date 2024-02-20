@@ -25,4 +25,8 @@ export class MenuComponent {
     });
   }
   
+  paginaUsuario(): void {
+    console.log("redirecionamento para página de usuário")
+  }
+
 }
